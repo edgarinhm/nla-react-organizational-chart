@@ -10,6 +10,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   position: "relative",
   backgroundColor: "#fff",
+  stroke:'none',
   "& .close-button": {
     position: "absolute",
     top: 2,
