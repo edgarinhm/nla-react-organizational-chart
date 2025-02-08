@@ -66,11 +66,12 @@ const ChartRootCard = ({
   onDeleteClick,
   onSaveClick,
   hierarchyPointNode,
+  foreignObjectProps,
 }) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
   return (
     <g>
-      <foreignObject x="-100" y="-50" width="200" height="300">
+      <foreignObject {...foreignObjectProps}>
         <ChartNode elevation={3}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />

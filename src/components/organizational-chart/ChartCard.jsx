@@ -1,6 +1,6 @@
 import { Avatar, Checkbox, IconButton, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Box,  Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
@@ -11,18 +11,18 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   position: "relative",
   backgroundColor: "#fff",
   stroke: "none",
-  "& .node-card-body":{
+  "& .node-card-body": {
     padding: theme.spacing(1),
   },
   "& .node-level": {
     position: "absolute",
     right: 8,
     padding: 4,
-    width: 12, 
+    width: 12,
     height: 12,
-    fontSize:"0.625rem",
-    backgroundColor:"rgba(236,236,236,255)",
-    color:"rgba(180,180,180,255)"
+    fontSize: "0.625rem",
+    backgroundColor: "rgba(236,236,236,255)",
+    color: "rgba(180,180,180,255)",
   },
   h6: {
     textAlign: "center",
@@ -59,15 +59,24 @@ const AddButton = styled(IconButton)({
   },
 });
 
-const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick, hierarchyPointNode }) => {
+const ChartCard = ({
+  nodeDatum,
+  onAddClick,
+  onDeleteClick,
+  onSaveClick,
+  hierarchyPointNode,
+  foreignObjectProps,
+}) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
   return (
     <g>
-      <foreignObject x="-100" y="-50" width="200" height="300">
+      <foreignObject {...foreignObjectProps}>
         <ChartNode elevation={3}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />
-            <Avatar  className="node-level" >{hierarchyPointNode.depth+1}</Avatar>
+            <Avatar className="node-level">
+              {hierarchyPointNode.depth + 1}
+            </Avatar>
             <Stack marginTop={3}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {nodeDatum.name}

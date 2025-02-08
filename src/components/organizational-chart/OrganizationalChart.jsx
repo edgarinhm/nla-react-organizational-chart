@@ -6,6 +6,7 @@ import ChartCard from "./ChartCard";
 
 import { OrganizationalData } from "../../common/mock/organizational-data";
 import ChartRootCard from "./ChartRootCard";
+import { useCenteredTopTree } from "../../common/hooks/use-chart";
 
 const ChartContainer = styled(Box)({
   display: "flex",
@@ -53,6 +54,17 @@ const OrganizationalChart = () => {
   // Sample tree data structure
   const [treeData] = useState(nodeRootData);
 
+  const nodeSize = { x: 200, y: 350 };
+  const separation = { siblings: 1.5, nonSiblings: 2.5 };
+  const foreignObjectProps = {
+    width: nodeSize.x,
+    y: -50,
+    height: nodeSize.y,
+    x: -100,
+  };
+
+  const [translate, containerRef] = useCenteredTopTree({ x: 0, y: 100 });
+
   const handleAddClick = useCallback((node) => {
     console.log("Add clicked for node:", node);
   }, []);
@@ -98,17 +110,20 @@ const OrganizationalChart = () => {
         height: "100vh",
         backgroundColor: "#f5f5f5",
       }}
+      ref={containerRef}
     >
       <Tree
         data={treeData}
         orientation="vertical"
         pathFunc="step"
-        renderCustomNodeElement={renderCustomNode}
-        separation={{ siblings: 1.5, nonSiblings: 2.5 }}
-        translate={{ x: window.innerWidth / 2, y: 100 }}
-        nodeSize={{ x: 200, y: 300 }}
+        separation={separation}
+        nodeSize={nodeSize}
+        translate={translate}
         zoomable={true}
         collapsible={false}
+        renderCustomNodeElement={(rd3tProps) =>
+          renderCustomNode({ ...rd3tProps, foreignObjectProps })
+        }
       />
     </Box>
   );
