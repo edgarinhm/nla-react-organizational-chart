@@ -1,10 +1,20 @@
-import { Avatar, Checkbox, IconButton, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Checkbox,
+  IconButton,
+  InputBase,
+  NativeSelect,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Box, Stack } from "@mui/system";
 
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
+import { DivisionData } from "../../common/mock/division-data";
 
 // Styled components for the org chart
 const ChartNode = styled(Paper)(({ theme }) => ({
@@ -60,6 +70,39 @@ const AddButton = styled(IconButton)({
   },
 });
 
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  "label + &": {
+    marginTop: theme.spacing(3),
+  },
+  "& .MuiInputBase-input": {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid #ced4da",
+    fontSize: 16,
+    padding: "10px 26px 10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:focus": {
+      borderRadius: 4,
+      borderColor: "#80bdff",
+      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
+    },
+  },
+}));
+
 const ChartRootCard = ({
   nodeDatum,
   onAddClick,
@@ -69,6 +112,11 @@ const ChartRootCard = ({
   foreignObjectProps,
 }) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
+  const [selectedDivision, setSelectedDivision] = useState("");
+  const [divisions, setDivisions] = useState(DivisionData);
+  const handleChange = (event) => {
+    setSelectedDivision(event.target.value);
+  };
   return (
     <g>
       <foreignObject {...foreignObjectProps}>
@@ -100,9 +148,23 @@ const ChartRootCard = ({
                   {nodeDatum.attributes?.employees}
                 </Typography>
               </Box>
-              <Typography variant="caption" sx={{ mt: 1 }} textAlign="center">
-                {nodeDatum.attributes?.department}
-              </Typography>
+              <NativeSelect
+                id="demo-customized-select-native"
+                value={selectedDivision}
+                onChange={handleChange}
+                input={<BootstrapInput />}
+              >
+                {!selectedDivision && (
+                  <option aria-label="None" value={""}>
+                    {"Division..."}
+                  </option>
+                )}
+                {divisions.map((division) => (
+                  <option key={division.id} value={division.id}>
+                    {division.name}
+                  </option>
+                ))}
+              </NativeSelect>
               <AddButton size="small" onClick={() => onAddClick(nodeDatum)}>
                 <AddIcon />
               </AddButton>
