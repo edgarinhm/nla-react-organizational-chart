@@ -8,12 +8,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // Styled components for the org chart
 const ChartNode = styled(Paper)(({ theme }) => ({
-  "& .node-card-body":{
-    padding: theme.spacing(1),
-  },
   position: "relative",
   backgroundColor: "#fff",
   stroke: "none",
+  "& .node-card-body":{
+    padding: theme.spacing(1),
+  },
   "& .node-level": {
     position: "absolute",
     right: 8,
@@ -62,10 +62,11 @@ const AddButton = styled(IconButton)({
 const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick }) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
   const depth = nodeDatum.__rd3t.depth+1;
+  const rootStyles=  depth === 1 ? {border:"0.125rem solid rgba(66,83,241,255)",}:{};
   return (
     <g>
       <foreignObject x="-100" y="-50" width="200" height="300">
-        <ChartNode elevation={1}>
+        <ChartNode elevation={3} style={rootStyles}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />
             <Avatar  className="node-level" >{depth}</Avatar>
