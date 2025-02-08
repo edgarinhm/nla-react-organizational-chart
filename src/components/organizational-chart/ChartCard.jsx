@@ -26,7 +26,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   },
   h6: {
     textAlign: "center",
-    padding: "0 1rem",
+    padding: "1rem",
   },
   "& .node-card-checkbox": {
     position: "absolute",
@@ -61,20 +61,14 @@ const AddButton = styled(IconButton)({
 
 const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick }) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
+  const depth = nodeDatum.__rd3t.depth+1;
   return (
     <g>
       <foreignObject x="-100" y="-50" width="200" height="300">
         <ChartNode elevation={1}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />
-            {/* <IconButton
-              className="node-level"
-              size="small"
-              onClick={() => onDeleteClick(nodeDatum)}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton> */}
-            <Avatar  className="node-level" sx={{ width: 24, height: 24 }} >2</Avatar>
+            <Avatar  className="node-level" sx={{ width: 24, height: 24 }} >{depth}</Avatar>
             <Stack marginTop={3}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {nodeDatum.name}
