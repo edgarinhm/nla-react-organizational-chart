@@ -5,6 +5,8 @@ import { Box, Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useRef, useState } from "react";
+import { useD3Drag } from "../../common/hooks/use-d3-drag";
 
 // Styled components for the org chart
 const ChartNode = styled(Paper)(({ theme }) => ({
@@ -66,10 +68,29 @@ const ChartCard = ({
   onSaveClick,
   hierarchyPointNode,
   foreignObjectProps,
+  x=0,
+  y=0
 }) => {
+  let [transformCache, cacheTransform] = useState(`${x} ${y}`);
+  
+  let ref = useD3Drag({
+    onDragStart: () => {
+      setCursorState('grabbing');
+    },
+    onDrag: (event) => {
+      console.log('onDrag', event)
+      cacheTransform(`${event.x} ${event.y}`);
+    },
+    onDragEnd: (event) => {
+      console.log('onDragEnd', event)
+      setCursorState('grab');
+    }
+  });
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
+  let [cursorState, setCursorState] = useState('grab');
+  
   return (
-    <g>
+    <g transform={`translate(${transformCache})`} ref={ref} cursor={cursorState}>
       <foreignObject {...foreignObjectProps}>
         <ChartNode elevation={3}>
           <Stack className="node-card-body">
