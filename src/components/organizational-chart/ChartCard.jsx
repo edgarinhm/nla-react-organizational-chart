@@ -68,7 +68,7 @@ const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick }) => {
         <ChartNode elevation={1}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />
-            <Avatar  className="node-level" sx={{ width: 24, height: 24 }} >{depth}</Avatar>
+            <Avatar  className="node-level" >{depth}</Avatar>
             <Stack marginTop={3}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {nodeDatum.name}
