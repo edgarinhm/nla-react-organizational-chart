@@ -1,9 +1,8 @@
-import { Checkbox, IconButton, Paper, Typography } from "@mui/material";
+import { Avatar, Checkbox, IconButton, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Box, padding, Stack } from "@mui/system";
+import { Box,  Stack } from "@mui/system";
 
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -15,11 +14,15 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   position: "relative",
   backgroundColor: "#fff",
   stroke: "none",
-  "& .close-button": {
+  "& .node-level": {
     position: "absolute",
-    top: 2,
-    right: 2,
+    right: 8,
     padding: 4,
+    width: 12, 
+    height: 12,
+    fontSize:"0.625rem",
+    backgroundColor:"rgba(236,236,236,255)",
+    color:"rgba(180,180,180,255)"
   },
   h6: {
     textAlign: "center",
@@ -64,13 +67,14 @@ const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick }) => {
         <ChartNode elevation={1}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />
-            <IconButton
-              className="close-button"
+            {/* <IconButton
+              className="node-level"
               size="small"
               onClick={() => onDeleteClick(nodeDatum)}
             >
               <CloseIcon fontSize="small" />
-            </IconButton>
+            </IconButton> */}
+            <Avatar  className="node-level" sx={{ width: 24, height: 24 }} >2</Avatar>
             <Stack marginTop={3}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {nodeDatum.name}
