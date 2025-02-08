@@ -49,8 +49,12 @@ const OrganizationalChart = () => {
     console.log("Add clicked for node:", node);
   }, []);
 
-  const handleCloseClick = useCallback((node) => {
-    console.log("Close clicked for node:", node);
+  const handleDeleteClick = useCallback((node) => {
+    console.log("Delete clicked for node:", node);
+  }, []);
+
+  const handleSaveClick = useCallback((node) => {
+    console.log("Save clicked for node:", node);
   }, []);
 
   const renderCustomNode = useCallback(
@@ -58,10 +62,11 @@ const OrganizationalChart = () => {
       <ChartCard
         {...props}
         onAddClick={handleAddClick}
-        onCloseClick={handleCloseClick}
+        onDeleteClick={handleDeleteClick}
+        onSaveClick={handleSaveClick}
       />
     ),
-    [handleAddClick, handleCloseClick]
+    [handleAddClick, handleDeleteClick, handleSaveClick]
   );
 
   return (

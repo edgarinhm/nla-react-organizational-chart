@@ -1,16 +1,20 @@
 import { Checkbox, IconButton, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Box, Stack } from "@mui/system";
+import { Box, padding, Stack } from "@mui/system";
 
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // Styled components for the org chart
 const ChartNode = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
+  "& .node-card-body":{
+    padding: theme.spacing(1),
+  },
   position: "relative",
   backgroundColor: "#fff",
-  stroke:'none',
+  stroke: "none",
   "& .close-button": {
     position: "absolute",
     top: 2,
@@ -27,6 +31,17 @@ const ChartNode = styled(Paper)(({ theme }) => ({
     left: 2,
     padding: 4,
   },
+
+  "& .node-card-actions": {
+    display: "flex",
+    justifyContent: "flex-end",
+    backgroundColor: "rgb(243, 244, 254)",
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  "& .node-card-actions:last-child": {
+    paddingRight: theme.spacing(1),
+  },
 }));
 
 const AddButton = styled(IconButton)({
@@ -41,49 +56,62 @@ const AddButton = styled(IconButton)({
   },
 });
 
-const ChartCard = ({ nodeDatum, onAddClick, onCloseClick }) => {
+const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick }) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
   return (
     <g>
       <foreignObject x="-100" y="-50" width="200" height="300">
         <ChartNode elevation={1}>
-          <Checkbox color="default" className="node-card-checkbox" />
-          <IconButton
-            className="close-button"
-            size="small"
-            onClick={() => onCloseClick(nodeDatum)}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-          <Stack marginTop={3}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              {nodeDatum.name}
-            </Typography>
-            <Box
-              marginTop={0.5}
-              display="flex"
-              flexDirection="column"
-              textAlign="start"
+          <Stack className="node-card-body">
+            <Checkbox color="default" className="node-card-checkbox" />
+            <IconButton
+              className="close-button"
+              size="small"
+              onClick={() => onDeleteClick(nodeDatum)}
             >
-              <Typography variant="caption" fontSize="0.5rem">
-                {"Openings"}
+              <CloseIcon fontSize="small" />
+            </IconButton>
+            <Stack marginTop={3}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                {nodeDatum.name}
               </Typography>
-
-              <Typography
-                variant="caption"
-                color={employees[0] !== employees[1] ? "error" : "inherit"}
-                sx={{ textDecoration: "underline" }}
+              <Box
+                marginTop={0.5}
+                display="flex"
+                flexDirection="column"
+                textAlign="start"
               >
-                {nodeDatum.attributes?.employees}
+                <Typography variant="caption" fontSize="0.5rem">
+                  {"Openings"}
+                </Typography>
+
+                <Typography
+                  variant="caption"
+                  color={employees[0] !== employees[1] ? "error" : "inherit"}
+                  sx={{ textDecoration: "underline" }}
+                >
+                  {nodeDatum.attributes?.employees}
+                </Typography>
+              </Box>
+              <Typography variant="caption" sx={{ mt: 1 }} textAlign="center">
+                {nodeDatum.attributes?.department}
               </Typography>
-            </Box>
-            <Typography variant="caption" sx={{ mt: 1 }} textAlign="center">
-              {nodeDatum.attributes?.department}
-            </Typography>
-            <AddButton size="small" onClick={() => onAddClick(nodeDatum)}>
-              <AddIcon />
-            </AddButton>
+              <AddButton size="small" onClick={() => onAddClick(nodeDatum)}>
+                <AddIcon />
+              </AddButton>
+            </Stack>
           </Stack>
+          <Box className="node-card-actions">
+            {onSaveClick && (
+              <IconButton size="small" onClick={() => onSaveClick(nodeDatum)}>
+                <SaveIcon fontSize="small" />
+              </IconButton>
+            )}
+
+            <IconButton size="small" onClick={() => onDeleteClick(nodeDatum)}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Box>
         </ChartNode>
       </foreignObject>
     </g>
