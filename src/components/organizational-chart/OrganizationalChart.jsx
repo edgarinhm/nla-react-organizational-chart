@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import ChartCard from "./ChartCard";
 
 import { OrganizationalData } from "../../common/mock/organizational-data";
+import ChartRootCard from "./ChartRootCard";
 
 const ChartContainer = styled(Box)({
   display: "flex",
@@ -31,7 +32,6 @@ const TierContainer = styled(Box)({
   },
 });
 
-
 const TierLabel = styled(Box)({
   position: "absolute",
   left: 0,
@@ -42,8 +42,16 @@ const TierLabel = styled(Box)({
 });
 
 const OrganizationalChart = () => {
+  const nodeRootData = {
+    name: "New position",
+    attributes: {
+      employees: "0 employees",
+      department: "Division",
+    },
+    children: [OrganizationalData],
+  };
   // Sample tree data structure
-  const [treeData] = useState(OrganizationalData);
+  const [treeData] = useState(nodeRootData);
 
   const handleAddClick = useCallback((node) => {
     console.log("Add clicked for node:", node);
@@ -58,14 +66,28 @@ const OrganizationalChart = () => {
   }, []);
 
   const renderCustomNode = useCallback(
-    (props) => (
-      <ChartCard
-        {...props}
-        onAddClick={handleAddClick}
-        onDeleteClick={handleDeleteClick}
-        onSaveClick={handleSaveClick}
-      />
-    ),
+    (props) => {
+      const depth = props.hierarchyPointNode?.depth;
+      return (
+        <>
+          {depth === 0 && (
+            <ChartRootCard
+              {...props}
+              onAddClick={handleAddClick}
+              onDeleteClick={handleDeleteClick}
+              onSaveClick={handleSaveClick}
+            />
+          )}
+          {depth > 0 && (
+            <ChartCard
+              {...props}
+              onAddClick={handleAddClick}
+              onDeleteClick={handleDeleteClick}
+            />
+          )}
+        </>
+      );
+    },
     [handleAddClick, handleDeleteClick, handleSaveClick]
   );
 

@@ -1,6 +1,6 @@
 import { Avatar, Checkbox, IconButton, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Box,  Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
@@ -8,21 +8,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // Styled components for the org chart
 const ChartNode = styled(Paper)(({ theme }) => ({
+  border: "0.125rem solid rgba(66,83,241,255)",
   position: "relative",
   backgroundColor: "#fff",
   stroke: "none",
-  "& .node-card-body":{
+  "& .node-card-body": {
     padding: theme.spacing(1),
   },
   "& .node-level": {
     position: "absolute",
     right: 8,
     padding: 4,
-    width: 12, 
+    width: 12,
     height: 12,
-    fontSize:"0.625rem",
-    backgroundColor:"rgba(236,236,236,255)",
-    color:"rgba(180,180,180,255)"
+    fontSize: "0.625rem",
+    backgroundColor: "rgba(236,236,236,255)",
+    color: "rgba(180,180,180,255)",
   },
   h6: {
     textAlign: "center",
@@ -59,7 +60,13 @@ const AddButton = styled(IconButton)({
   },
 });
 
-const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick, hierarchyPointNode }) => {
+const ChartRootCard = ({
+  nodeDatum,
+  onAddClick,
+  onDeleteClick,
+  onSaveClick,
+  hierarchyPointNode,
+}) => {
   const employees = nodeDatum.attributes?.employees?.split(" ")[0].split("/");
   return (
     <g>
@@ -67,7 +74,9 @@ const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick, hierarch
         <ChartNode elevation={3}>
           <Stack className="node-card-body">
             <Checkbox color="default" className="node-card-checkbox" />
-            <Avatar  className="node-level" >{hierarchyPointNode.depth+1}</Avatar>
+            <Avatar className="node-level">
+              {hierarchyPointNode.depth + 1}
+            </Avatar>
             <Stack marginTop={3}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {nodeDatum.name}
@@ -99,12 +108,9 @@ const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick, hierarch
             </Stack>
           </Stack>
           <Box className="node-card-actions">
-            {onSaveClick && (
-              <IconButton size="small" onClick={() => onSaveClick(nodeDatum)}>
-                <SaveIcon fontSize="small" />
-              </IconButton>
-            )}
-
+            <IconButton size="small" onClick={() => onSaveClick(nodeDatum)}>
+              <SaveIcon fontSize="small" />
+            </IconButton>
             <IconButton size="small" onClick={() => onDeleteClick(nodeDatum)}>
               <DeleteIcon fontSize="small" />
             </IconButton>
@@ -115,4 +121,4 @@ const ChartCard = ({ nodeDatum, onAddClick, onDeleteClick, onSaveClick, hierarch
   );
 };
 
-export default ChartCard;
+export default ChartRootCard;
