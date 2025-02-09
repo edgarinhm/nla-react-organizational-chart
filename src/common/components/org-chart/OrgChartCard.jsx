@@ -19,6 +19,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   "& .node-card-header": {
     display: "flex",
     flexDirection: "column",
+    textAlign:"center",
   },
   "& .node-card-header-actions": {
     display: "flex",
@@ -34,6 +35,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     textAlign: "start",
+    marginBottom: "0.5rem",
   },
   "& .node-level": {
     padding: theme.spacing(0.5),
@@ -105,7 +107,6 @@ const OrgChartCardBody = ({ employees, department, onAddClick }) => {
         <Typography variant="caption" fontSize="0.5rem">
           {"Openings"}
         </Typography>
-
         <Typography
           variant="caption"
           color={employeesCount[0] !== employeesCount[1] ? "error" : "inherit"}
@@ -114,7 +115,7 @@ const OrgChartCardBody = ({ employees, department, onAddClick }) => {
           {employees}
         </Typography>
       </Box>
-      <Typography variant="caption" sx={{ mt: 1 }} textAlign="center">
+      <Typography variant="caption" textAlign="center">
         {department}
       </Typography>
       <AddButton size="small" onClick={() => onAddClick()}>

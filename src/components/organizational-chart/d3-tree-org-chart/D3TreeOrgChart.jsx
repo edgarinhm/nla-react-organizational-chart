@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import Tree from "react-d3-tree";
 import { Box } from "@mui/material";
-import ChartRootCard from "../ChartRootCard";
 import { useCenteredTopTree } from "../../../common/hooks/use-chart";
 import D3TreeNode from "./D3TreeNode";
 
@@ -31,19 +30,15 @@ const D3TreeOrgChart = ({ treeData, zoom }) => {
 
   const renderCustomNode = useCallback(
     (props) => {
-      const depth = props.hierarchyPointNode?.depth;
       const nodeProps = {
         ...props,
         onAddClick: handleAddClick,
         onDeleteClick: handleDeleteClick,
+        onSaveClick: handleSaveClick,
       };
-      return depth === 0 ? (
-        <ChartRootCard {...nodeProps} />
-      ) : (
-        <D3TreeNode {...nodeProps} />
-      );
+      return <D3TreeNode {...nodeProps} />;
     },
-    [handleAddClick, handleDeleteClick]
+    [handleAddClick, handleDeleteClick, handleSaveClick]
   );
 
   return (
