@@ -36,6 +36,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
     flexDirection: "column",
     textAlign: "start",
     marginBottom: "0.5rem",
+    paddingLeft:"0.5rem",
   },
   "& .node-level": {
     padding: theme.spacing(0.5),
