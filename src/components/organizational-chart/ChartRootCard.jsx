@@ -37,7 +37,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   },
   h6: {
     textAlign: "center",
-    padding: "1rem",
+    padding: "0.5rem",
   },
   "& .node-card-checkbox": {
     position: "absolute",
@@ -75,12 +75,13 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     marginTop: theme.spacing(3),
   },
   "& .MuiInputBase-input": {
+    maxHeight:"3rem",
     borderRadius: 4,
     position: "relative",
     backgroundColor: theme.palette.background.paper,
     border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
+    fontSize: "1rem",
+    padding: "2px 26px 2px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
     // Use the system font instead of the default Roboto font.
     fontFamily: [
@@ -117,6 +118,7 @@ const ChartRootCard = ({
   const handleChange = (event) => {
     setSelectedDivision(event.target.value);
   };
+  
   return (
     <g>
       <foreignObject {...foreignObjectProps}>

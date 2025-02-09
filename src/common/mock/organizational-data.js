@@ -3,6 +3,7 @@ export const OrganizationalData = {
     attributes: {
       employees: "Not assigned",
       department: "OPERATIONS",
+      tier:"tier 2",
     },
     children: [
       {
@@ -10,6 +11,7 @@ export const OrganizationalData = {
         attributes: {
           employees: "1/1 employee",
           department: "OPERATIONS",
+          tier:"tier 3",
         },
         children: [
           {
@@ -17,6 +19,7 @@ export const OrganizationalData = {
             attributes: {
               employees: "0/1 employee",
               department: "OPERATIONS",
+              tier:"tier 4"
             },
           },
         ],
@@ -26,6 +29,7 @@ export const OrganizationalData = {
         attributes: {
           employees: "2/2 employee",
           department: "OPERATIONS",
+          tier:"tier 3",
         },
       },
     ],

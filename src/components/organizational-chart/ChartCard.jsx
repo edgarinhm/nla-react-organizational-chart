@@ -28,7 +28,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   },
   h6: {
     textAlign: "center",
-    padding: "1rem",
+    padding: "0.5rem",
   },
   "& .node-card-checkbox": {
     position: "absolute",

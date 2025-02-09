@@ -1,69 +1,67 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Tree from "react-d3-tree";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ChartCard from "./ChartCard";
-
-import { OrganizationalData } from "../../common/mock/organizational-data";
 import ChartRootCard from "./ChartRootCard";
 import { useCenteredTopTree } from "../../common/hooks/use-chart";
+import AddBoxIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
-const ChartContainer = styled(Box)({
+import { OrganizationalData } from "../../common/mock/organizational-data";
+import TierList from "./TierList";
+import { GetTiersList } from "../../common/functions/org-chart-functions";
+
+const ZoomControls = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  right: 20,
+  top: 20,
   display: "flex",
   flexDirection: "column",
-  gap: "40px",
-  padding: "20px",
-  backgroundColor: "#f5f5f5",
-  minHeight: "100vh",
-});
-
-const TierContainer = styled(Box)({
-  display: "flex",
-  gap: "40px",
-  position: "relative",
-  justifyContent: "center",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    top: "-40px",
-    left: "50%",
-    height: "40px",
-    width: "2px",
-    backgroundColor: "#999",
+  gap: "1rem",
+  button: {
+    borderRadius: "4px",
+    backgroundColor: "white",
+    padding: "8px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
   },
-});
-
-const TierLabel = styled(Box)({
-  position: "absolute",
-  left: 0,
-  top: "50%",
-  transform: "translateY(-50%)",
-  color: "#666",
-  paddingLeft: "20px",
-});
+}));
 
 const OrganizationalChart = () => {
-  const nodeRootData = {
+  const chartData = {
     name: "New position",
     attributes: {
       employees: "0 employees",
-      department: "Division",
+      tier: "tier 1",
     },
-    children: [OrganizationalData],
+    children: [],
   };
-  // Sample tree data structure
-  const [treeData] = useState(nodeRootData);
 
-  const nodeSize = { x: 200, y: 350 };
+  const [treeData, setTreeData] = useState(chartData);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [zoom, setZoom] = useState(1);
+  const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
   const foreignObjectProps = {
     width: nodeSize.x,
-    y: -50,
-    height: nodeSize.y,
+    height: 300,
     x: -100,
+    y: -50,
   };
 
-  const [translate, containerRef] = useCenteredTopTree({ x: 0, y: 100 });
+  const [nodeTiers, setNodeTiers] = useState(0);
+
+  const [translate, containerRef] = useCenteredTopTree({ x: 0, y: 60 });
+
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(prev + 0.2, 2));
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prev) => Math.max(prev - 0.2, 0.4));
+  };
 
   const handleAddClick = useCallback((node) => {
     console.log("Add clicked for node:", node);
@@ -80,28 +78,38 @@ const OrganizationalChart = () => {
   const renderCustomNode = useCallback(
     (props) => {
       const depth = props.hierarchyPointNode?.depth;
-      return (
-        <>
-          {depth === 0 && (
-            <ChartRootCard
-              {...props}
-              onAddClick={handleAddClick}
-              onDeleteClick={handleDeleteClick}
-              onSaveClick={handleSaveClick}
-            />
-          )}
-          {depth > 0 && (
-            <ChartCard
-              {...props}
-              onAddClick={handleAddClick}
-              onDeleteClick={handleDeleteClick}
-            />
-          )}
-        </>
+      const nodeProps = {
+        ...props,
+        onAddClick: handleAddClick,
+        onDeleteClick: handleDeleteClick,
+      };
+      return depth === 0 ? (
+        <ChartRootCard {...nodeProps} />
+      ) : (
+        <ChartCard {...nodeProps} />
       );
     },
-    [handleAddClick, handleDeleteClick, handleSaveClick]
+    [handleAddClick, handleDeleteClick]
   );
+
+  useEffect(() => {
+    const loadChartData = async () => {
+      setIsLoading(true);
+      try {
+        const chartData = await Promise.resolve(OrganizationalData);
+        setTreeData((state) => {
+          state.children = [chartData];
+          return state;
+        });
+        setNodeTiers(GetTiersList(chartData));
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadChartData();
+  }, []);
 
   return (
     <Box
@@ -109,22 +117,45 @@ const OrganizationalChart = () => {
         width: "100%",
         height: "100vh",
         backgroundColor: "#f5f5f5",
+        position: "relative",
       }}
-      ref={containerRef}
     >
-      <Tree
-        data={treeData}
-        orientation="vertical"
-        pathFunc="step"
-        separation={separation}
-        nodeSize={nodeSize}
-        translate={translate}
-        zoomable={true}
-        collapsible={false}
-        renderCustomNodeElement={(rd3tProps) =>
-          renderCustomNode({ ...rd3tProps, foreignObjectProps })
-        }
-      />
+      {!isLoading && (
+        <>
+          <TierList tiers={nodeTiers} />
+          <ZoomControls>
+            <IconButton onClick={handleZoomIn} size="small">
+              <AddBoxIcon />
+            </IconButton>
+            <IconButton onClick={handleZoomOut} size="small">
+              <RemoveIcon />
+            </IconButton>
+          </ZoomControls>
+          <Box
+            ref={containerRef}
+            sx={{
+              width: "calc(100% - 80px)",
+              height: "100%",
+              marginLeft: "80px",
+            }}
+          >
+            <Tree
+              data={treeData}
+              orientation="vertical"
+              pathFunc="step"
+              separation={separation}
+              nodeSize={nodeSize}
+              translate={translate}
+              zoom={zoom}
+              zoomable={false}
+              collapsible={false}
+              renderCustomNodeElement={(rd3tProps) =>
+                renderCustomNode({ ...rd3tProps, foreignObjectProps })
+              }
+            />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
