@@ -5,7 +5,7 @@ import { Box, Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useD3Drag } from "../../common/hooks/use-d3-drag";
 
 // Styled components for the org chart
@@ -28,7 +28,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   },
   h6: {
     textAlign: "center",
-    padding: "1rem",
+    padding: "0.5rem",
   },
   "& .node-card-checkbox": {
     position: "absolute",
