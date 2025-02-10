@@ -49,10 +49,10 @@ const D3TreeNode = ({
             title={nodeDatum?.name}
             employees={employees}
             level={depth}
-            onCheckCard={onCheckCard}
-            onAddClick={onAddClick}
-            onSaveClick={onSaveClick}
-            onDeleteClick={onDeleteClick}
+            onCheckCard={() => onCheckCard(nodeDatum)}
+            onAddClick={() => onAddClick(nodeDatum)}
+            onSaveClick={() => onSaveClick(nodeDatum)}
+            onDeleteClick={() => onDeleteClick(nodeDatum)}
             divisions={divisions}
             onSelectDivision={onSelectDivision}
           />
@@ -66,9 +66,12 @@ const D3TreeNode = ({
             <OrgChartCard.Body
               employees={employees}
               department={department}
-              onAddClick={onAddClick}
+              onAddClick={() => onAddClick(nodeDatum)}
+              onCheckCard={() => onCheckCard(nodeDatum)}
             />
-            <OrgChartCard.Footer onDeleteClick={onDeleteClick} />
+            <OrgChartCard.Footer
+              onDeleteClick={() => onDeleteClick(nodeDatum)}
+            />
           </OrgChartCard>
         )}
       </foreignObject>

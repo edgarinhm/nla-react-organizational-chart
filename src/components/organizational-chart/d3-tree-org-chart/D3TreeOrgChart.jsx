@@ -3,8 +3,16 @@ import Tree from "react-d3-tree";
 import { Box } from "@mui/material";
 import { useCenteredTopTree } from "../../../common/hooks/use-chart";
 import D3TreeNode from "./D3TreeNode";
+import { useChartApi } from "../use-chart-api";
+import { GetDivisionId } from "../../../common/functions/org-chart-functions";
 
-const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
+const D3TreeOrgChart = ({
+  treeData,
+  zoom,
+  divisions,
+  selectedDivision,
+  onSelectDivision,
+}) => {
   const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
   const foreignObjectProps = {
@@ -16,9 +24,26 @@ const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
 
   const [translate, containerRef] = useCenteredTopTree({ x: 0, y: 60 });
 
-  const handleAddClick = useCallback((node) => {
-    console.log("Add clicked for node:", node);
-  }, []);
+  const { onAddClick } = useChartApi();
+
+  const handleAddClick = useCallback(
+    async (node) => {
+      try {
+        console.log("Add clicked for node:", node);
+        const position = {
+          name: node?.name,
+          division: node?.attributes?.department
+            ? GetDivisionId(node.attributes.department)
+            : selectedDivision,
+          parentId: node.__rd3t.depth,
+        };
+        await onAddClick(position);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [onAddClick, selectedDivision]
+  );
 
   const handleDeleteClick = useCallback((node) => {
     console.log("Delete clicked for node:", node);
@@ -28,8 +53,16 @@ const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
     console.log("Save clicked for node:", node);
   }, []);
 
-  const handleSelectedDivision = useCallback((node) => {
-    console.log("Select division for node:", node);
+  const handleSelectedDivision = useCallback(
+    (node) => {
+      console.log("Select division for node:", node);
+      onSelectDivision(node);
+    },
+    [onSelectDivision]
+  );
+
+  const handleCheckCard = useCallback((node) => {
+    console.log("Check card for node:", node);
   }, []);
 
   const renderCustomNode = useCallback(
@@ -41,15 +74,17 @@ const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
         onDeleteClick: handleDeleteClick,
         onSaveClick: handleSaveClick,
         onSelectDivision: handleSelectedDivision,
+        onCheckCard: handleCheckCard,
       };
       return <D3TreeNode {...nodeProps} />;
     },
     [
+      divisions,
       handleAddClick,
       handleDeleteClick,
       handleSaveClick,
       handleSelectedDivision,
-      divisions,
+      handleCheckCard,
     ]
   );
 

@@ -2,15 +2,15 @@ export const OrganizationalData = {
     name: "COO",
     attributes: {
       employees: "Not assigned",
-      department: "OPERATIONS",
+      department: "Operations",
       tier:"tier 2",
     },
     children: [
       {
-        name: "BUSINESS OPERATIONS",
+        name: "BUSINESS Operations",
         attributes: {
           employees: "1/1 employee",
-          department: "OPERATIONS",
+          department: "Operations",
           tier:"tier 3",
         },
         children: [
@@ -18,7 +18,7 @@ export const OrganizationalData = {
             name: "PLANNING ANALIST",
             attributes: {
               employees: "0/1 employee",
-              department: "OPERATIONS",
+              department: "Operations",
               tier:"tier 4"
             },
           },
@@ -28,7 +28,7 @@ export const OrganizationalData = {
         name: "BUSINESS DEVELOPMENT",
         attributes: {
           employees: "2/2 employee",
-          department: "OPERATIONS",
+          department: "Operations",
           tier:"tier 3",
         },
       },

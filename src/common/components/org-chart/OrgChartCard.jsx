@@ -12,14 +12,14 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ChartNode = styled(Paper)(({ theme }) => ({
+export const ChartNode = styled(Paper)(({ theme }) => ({
   position: "relative",
   backgroundColor: "#fff",
   stroke: "none",
   "& .node-card-header": {
     display: "flex",
     flexDirection: "column",
-    textAlign:"center",
+    textAlign: "center",
   },
   "& .node-card-header-actions": {
     display: "flex",
@@ -36,7 +36,10 @@ const ChartNode = styled(Paper)(({ theme }) => ({
     flexDirection: "column",
     textAlign: "start",
     marginBottom: "0.5rem",
-    paddingLeft:"0.5rem",
+    paddingLeft: "0.5rem",
+  },
+  "& .node-card-body-division": {
+    textTransform: "uppercase",
   },
   "& .node-level": {
     padding: theme.spacing(0.5),
@@ -49,6 +52,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   h6: {
     textAlign: "center",
     padding: theme.spacing(0.5),
+    textTransform: "uppercase",
   },
   "& .node-card-checkbox": {
     padding: 0,
@@ -66,7 +70,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const AddButton = styled(IconButton)({
+export const AddButton = styled(IconButton)({
   position: "absolute",
   bottom: "-45px",
   left: "50%",
@@ -116,7 +120,11 @@ const OrgChartCardBody = ({ employees, department, onAddClick }) => {
           {employees}
         </Typography>
       </Box>
-      <Typography variant="caption" textAlign="center">
+      <Typography
+        className="node-card-body-division"
+        variant="caption"
+        textAlign="center"
+      >
         {department}
       </Typography>
       <AddButton size="small" onClick={() => onAddClick()}>
