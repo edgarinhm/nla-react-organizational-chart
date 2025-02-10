@@ -59,7 +59,7 @@ const OrganizationalChart = () => {
       } catch (error) {
         error &&
           setErrorMessage(
-            "sorry, the request was not proccesed, please try again."
+            "sorry, the request was not processed, please try again."
           );
       } finally {
         setIsLoading(false);
