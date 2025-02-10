@@ -36,6 +36,7 @@ const D3TreeOrgChart = ({
             ? GetDivisionId(node.attributes.department)
             : selectedDivision,
           parentId: node.__rd3t.depth,
+          tier: `Tier ${node.__rd3t.depth + 1}`,
         };
         await onAddClick(position);
       } catch (error) {

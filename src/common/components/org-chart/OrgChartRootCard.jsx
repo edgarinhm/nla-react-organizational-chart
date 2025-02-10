@@ -3,6 +3,8 @@ import {
   Avatar,
   Box,
   Checkbox,
+  FormControl,
+  FormHelperText,
   InputBase,
   NativeSelect,
   Stack,
@@ -47,10 +49,15 @@ export const OrgChartRootCard = ({
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
   const employeesCount = employees?.split(" ")[0].split("/");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (event) => {
     setSelectedDivision(event.target.value);
     onSelectDivision(event.target.value);
+  };
+
+  const isValidForm = () => {
+    return !!selectedDivision;
   };
 
   return (
@@ -84,24 +91,39 @@ export const OrgChartRootCard = ({
             {employees}
           </Typography>
         </Box>
-        <NativeSelect
-          id="demo-customized-select-native"
-          value={selectedDivision}
-          onChange={handleChange}
-          input={<BootstrapInput />}
+        <FormControl
+          required
+          sx={{ m: 1, minWidth: 120 }}
+          error={!isValidForm()}
         >
-          {!selectedDivision && (
-            <option aria-label="None" value={""}>
-              {"Division..."}
-            </option>
+          <NativeSelect
+            id="demo-customized-select-native"
+            value={selectedDivision}
+            onChange={handleChange}
+            input={<BootstrapInput />}
+          >
+            {!isValidForm() && (
+              <option aria-label="None" value={""}>
+                {"Division..."}
+              </option>
+            )}
+            {divisions?.map((division) => (
+              <option key={division.id} value={division.id}>
+                {division.name}
+              </option>
+            ))}
+          </NativeSelect>
+          {!isValidForm() && submitted && (
+            <FormHelperText>Required</FormHelperText>
           )}
-          {divisions?.map((division) => (
-            <option key={division.id} value={division.id}>
-              {division.name}
-            </option>
-          ))}
-        </NativeSelect>
-        <AddButton size="small" onClick={() => onAddClick()}>
+        </FormControl>
+        <AddButton
+          size="small"
+          onClick={() => {
+            setSubmitted(true);
+            if (isValidForm()) onAddClick();
+          }}
+        >
           <AddIcon />
         </AddButton>
       </Stack>
