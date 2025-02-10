@@ -12,6 +12,7 @@ const D3TreeOrgChart = ({
   divisions,
   selectedDivision,
   onSelectDivision,
+  onUpdatedChartData,
 }) => {
   const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
@@ -24,12 +25,11 @@ const D3TreeOrgChart = ({
 
   const [translate, containerRef] = useCenteredTopTree({ x: 0, y: 60 });
 
-  const { onAddClick } = useChartApi();
+  const { onAddClick, onDeleteClick } = useChartApi();
 
   const handleAddClick = useCallback(
     async (node) => {
       try {
-        console.log("Add clicked for node:", node);
         const position = {
           name: node?.name,
           division: node?.attributes?.department
@@ -39,16 +39,28 @@ const D3TreeOrgChart = ({
           tier: `Tier ${node.__rd3t.depth + 1}`,
         };
         await onAddClick(position);
+        onUpdatedChartData();
       } catch (error) {
         console.error(error);
       }
     },
-    [onAddClick, selectedDivision]
+    [onAddClick, selectedDivision, onUpdatedChartData]
   );
 
-  const handleDeleteClick = useCallback((node) => {
-    console.log("Delete clicked for node:", node);
-  }, []);
+  const handleDeleteClick = useCallback(
+    async (node) => {
+      try {
+        const positionId = node?.attributes?.id;
+        if (positionId) {
+          await onDeleteClick(positionId);
+          onUpdatedChartData();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [onDeleteClick, onUpdatedChartData]
+  );
 
   const handleSaveClick = useCallback((node) => {
     console.log("Save clicked for node:", node);
@@ -56,7 +68,6 @@ const D3TreeOrgChart = ({
 
   const handleSelectedDivision = useCallback(
     (node) => {
-      console.log("Select division for node:", node);
       onSelectDivision(node);
     },
     [onSelectDivision]

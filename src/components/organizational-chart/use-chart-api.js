@@ -1,17 +1,18 @@
-import { CreatePosition } from "../../common/components/positions-service";
+import {
+  CreatePosition,
+  DeletePositionById,
+} from "../../common/components/positions-service";
 
 export const useChartApi = () => {
   const onAddClick = async (position) => {
-    console.log('position', position);
-    
-    //return await CreatePosition(position);
+    return await CreatePosition(position);
   };
 
-  const onDeleteClick = (node) => {};
+  const onDeleteClick = async (positionId) => {
+    return await DeletePositionById(positionId);
+  };
 
   const onSaveClick = (node) => {};
-
-  const onSelectDivision = (node) => {};
 
   const onCheckCard = (node) => {};
 
@@ -19,7 +20,6 @@ export const useChartApi = () => {
     onAddClick,
     onDeleteClick,
     onSaveClick,
-    onSelectDivision,
     onCheckCard,
   };
 };

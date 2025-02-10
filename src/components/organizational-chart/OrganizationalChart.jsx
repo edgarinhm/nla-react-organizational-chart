@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { GetTiersList } from "../../common/functions/org-chart-functions";
+import {
+  GetTiersList,
+  MapPostionsChartNodes,
+} from "../../common/functions/org-chart-functions";
 import D3TreeOrgChart from "./d3-tree-org-chart/D3TreeOrgChart";
 import { OrganizationalData } from "../../common/mock/organizational-data";
 import {
@@ -12,9 +15,10 @@ import {
 import TierList from "./TierList";
 import ZoomControls from "../../common/components/org-chart/ZoomControls";
 import { GetDivisions } from "../../common/components/divisions-service";
+import { GetAllPositions } from "../../common/components/positions-service";
 
 const OrganizationalChart = () => {
-  const chartData = {
+  const initialChartData = {
     name: "New position",
     attributes: {
       employees: "0 employees",
@@ -24,31 +28,41 @@ const OrganizationalChart = () => {
   };
   const [errorMessage, setErrorMessage] = useState("");
   const [divisions, setDivisions] = useState();
-  const [treeData, setTreeData] = useState(chartData);
+  const [treeData, setTreeData] = useState(initialChartData);
   const [nodeTiers, setNodeTiers] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [zoom, setZoom] = useState(1);
-
   const [selectedDivision, setSelectedDivision] = useState();
 
+  const [updatedChartData, setUpdatedChartData] = useState(false);
+
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
     const loadChartData = async () => {
       setIsLoading(true);
       try {
-        const chartData = await Promise.resolve(OrganizationalData);
-        setTreeData((state) => {
-          state.children = [chartData];
-          return state;
-        });
+        const positions = await GetAllPositions(controller.signal);
+        const chartData = MapPostionsChartNodes(positions);
+        isMounted &&
+          setTreeData((state) => {
+            state.children = chartData;
+            return state;
+          });
         setNodeTiers(GetTiersList(chartData));
       } catch (error) {
         console.error("error", error);
       } finally {
         setIsLoading(false);
       }
+
+      return () => {
+        isMounted = false;
+        controller.abort();
+      };
     };
     loadChartData();
-  }, []);
+  }, [updatedChartData]);
 
   useEffect(() => {
     let isMounted = true;
@@ -93,6 +107,7 @@ const OrganizationalChart = () => {
             divisions={divisions}
             onSelectDivision={(division) => setSelectedDivision(division)}
             selectedDivision={selectedDivision}
+            onUpdatedChartData={() => setUpdatedChartData((state) => !state)}
           />
         )}
       </Box>
