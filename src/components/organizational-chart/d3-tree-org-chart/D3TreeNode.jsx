@@ -35,6 +35,7 @@ const D3TreeNode = ({
 
   const { employees, department, tier } = nodeDatum?.attributes;
   const depth = hierarchyPointNode?.depth;
+  if (depth === 0) ref = null;
 
   return (
     <g
