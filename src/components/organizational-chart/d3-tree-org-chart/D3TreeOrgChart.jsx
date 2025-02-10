@@ -24,12 +24,11 @@ const D3TreeOrgChart = ({
 
   const [translate, containerRef] = useCenteredTopTree({ x: 0, y: 60 });
 
-  const { onAddClick } = useChartApi();
+  const { onAddClick, onDeleteClick } = useChartApi();
 
   const handleAddClick = useCallback(
     async (node) => {
       try {
-        console.log("Add clicked for node:", node);
         const position = {
           name: node?.name,
           division: node?.attributes?.department
@@ -46,9 +45,17 @@ const D3TreeOrgChart = ({
     [onAddClick, selectedDivision]
   );
 
-  const handleDeleteClick = useCallback((node) => {
-    console.log("Delete clicked for node:", node);
-  }, []);
+  const handleDeleteClick = useCallback(
+    async (node) => {
+      try {
+        const positionId = node?.attributes?.id;
+        if (positionId) await onDeleteClick(positionId);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [onDeleteClick]
+  );
 
   const handleSaveClick = useCallback((node) => {
     console.log("Save clicked for node:", node);
