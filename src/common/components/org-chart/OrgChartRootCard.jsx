@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Avatar,
   Box,
@@ -10,8 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import OrgChartCard from "./OrgChartCard";
-import { DivisionData } from "../../mock/division-data";
-
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(3),
@@ -41,30 +39,16 @@ export const OrgChartRootCard = ({
   onSaveClick,
   onDeleteClick,
   onCheckCard,
+  divisions,
+  onSelectDivision,
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
-  const [divisions, setDivisions] = useState();
-  const [isLoading, setIsLoading] = useState(false);
   const employeesCount = employees?.split(" ")[0].split("/");
 
   const handleChange = (event) => {
     setSelectedDivision(event.target.value);
+    onSelectDivision(event.target.value);
   };
-
-  useEffect(() => {
-    const loadDivisionsData = async () => {
-      setIsLoading(true);
-      try {
-        const divisionData = await Promise.resolve(DivisionData);
-        setDivisions(divisionData);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadDivisionsData();
-  }, []);
 
   return (
     <OrgChartCard>
@@ -108,12 +92,11 @@ export const OrgChartRootCard = ({
               {"Division..."}
             </option>
           )}
-          {!isLoading &&
-            divisions?.map((division) => (
-              <option key={division.id} value={division.id}>
-                {division.name}
-              </option>
-            ))}
+          {divisions?.map((division) => (
+            <option key={division.id} value={division.id}>
+              {division.name}
+            </option>
+          ))}
         </NativeSelect>
       </Stack>
       <OrgChartCard.Footer

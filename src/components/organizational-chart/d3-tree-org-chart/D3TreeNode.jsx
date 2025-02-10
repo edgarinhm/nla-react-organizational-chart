@@ -13,6 +13,8 @@ const D3TreeNode = ({
   onDeleteClick,
   onAddClick,
   onCheckCard,
+  divisions,
+  onSelectDivision,
 }) => {
   let [cacheTransform, setCacheTransform] = useState(`${x} ${y}`);
   let [cursorState, setCursorState] = useState("grab");
@@ -50,6 +52,8 @@ const D3TreeNode = ({
             onAddClick={onAddClick}
             onSaveClick={onSaveClick}
             onDeleteClick={onDeleteClick}
+            divisions={divisions}
+            onSelectDivision={onSelectDivision}
           />
         ) : (
           <OrgChartCard>
@@ -63,9 +67,7 @@ const D3TreeNode = ({
               department={department}
               onAddClick={onAddClick}
             />
-            <OrgChartCard.Footer
-              onDeleteClick={onDeleteClick}
-            />
+            <OrgChartCard.Footer onDeleteClick={onDeleteClick} />
           </OrgChartCard>
         )}
       </foreignObject>

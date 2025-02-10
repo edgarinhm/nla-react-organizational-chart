@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { useCenteredTopTree } from "../../../common/hooks/use-chart";
 import D3TreeNode from "./D3TreeNode";
 
-const D3TreeOrgChart = ({ treeData, zoom }) => {
+const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
   const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
   const foreignObjectProps = {
@@ -28,17 +28,29 @@ const D3TreeOrgChart = ({ treeData, zoom }) => {
     console.log("Save clicked for node:", node);
   }, []);
 
+  const handleSelectedDivision = useCallback((node) => {
+    console.log("Select division for node:", node);
+  }, []);
+
   const renderCustomNode = useCallback(
     (props) => {
       const nodeProps = {
         ...props,
+        divisions,
         onAddClick: handleAddClick,
         onDeleteClick: handleDeleteClick,
         onSaveClick: handleSaveClick,
+        onSelectDivision: handleSelectedDivision,
       };
       return <D3TreeNode {...nodeProps} />;
     },
-    [handleAddClick, handleDeleteClick, handleSaveClick]
+    [
+      handleAddClick,
+      handleDeleteClick,
+      handleSaveClick,
+      handleSelectedDivision,
+      divisions,
+    ]
   );
 
   return (
