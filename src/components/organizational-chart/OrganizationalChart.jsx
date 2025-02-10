@@ -29,6 +29,8 @@ const OrganizationalChart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [zoom, setZoom] = useState(1);
 
+  const [selectedDivision, setSelectedDivision] = useState();
+
   useEffect(() => {
     const loadChartData = async () => {
       setIsLoading(true);
@@ -89,6 +91,8 @@ const OrganizationalChart = () => {
             treeData={treeData}
             zoom={zoom}
             divisions={divisions}
+            onSelectDivision={(division) => setSelectedDivision(division)}
+            selectedDivision={selectedDivision}
           />
         )}
       </Box>
