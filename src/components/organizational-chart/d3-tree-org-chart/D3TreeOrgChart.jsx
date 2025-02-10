@@ -12,6 +12,7 @@ const D3TreeOrgChart = ({
   divisions,
   selectedDivision,
   onSelectDivision,
+  onUpdatedChartData,
 }) => {
   const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
@@ -38,23 +39,27 @@ const D3TreeOrgChart = ({
           tier: `Tier ${node.__rd3t.depth + 1}`,
         };
         await onAddClick(position);
+        onUpdatedChartData();
       } catch (error) {
         console.error(error);
       }
     },
-    [onAddClick, selectedDivision]
+    [onAddClick, selectedDivision, onUpdatedChartData]
   );
 
   const handleDeleteClick = useCallback(
     async (node) => {
       try {
         const positionId = node?.attributes?.id;
-        if (positionId) await onDeleteClick(positionId);
+        if (positionId) {
+          await onDeleteClick(positionId);
+          onUpdatedChartData();
+        }
       } catch (error) {
         console.error(error);
       }
     },
-    [onDeleteClick]
+    [onDeleteClick, onUpdatedChartData]
   );
 
   const handleSaveClick = useCallback((node) => {
@@ -63,7 +68,6 @@ const D3TreeOrgChart = ({
 
   const handleSelectedDivision = useCallback(
     (node) => {
-      console.log("Select division for node:", node);
       onSelectDivision(node);
     },
     [onSelectDivision]

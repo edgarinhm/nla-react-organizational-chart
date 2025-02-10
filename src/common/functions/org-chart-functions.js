@@ -15,10 +15,8 @@ export const GetDivisionId = (division) => {
       return 1;
     case "Customer Succes":
       return 2;
-
     case "Backoffice":
       return 3;
-
     case "Technology":
       return 4;
     case "Sales":
@@ -31,6 +29,27 @@ export const GetDivisionId = (division) => {
   }
 };
 
+export const GetDivision = (divisionId) => {
+  switch (divisionId) {
+    case 1:
+      return "Bussines Development";
+    case 2:
+      return "Customer Succes";
+
+    case 3:
+      return "Backoffice";
+    case 4:
+      return "Technology";
+    case 5:
+      return "Sales";
+    case 6:
+      return "Operations";
+
+    default:
+      return divisionId;
+  }
+};
+
 export const MapPostionsChartNodes = (positions) => {
   return positions.map((position) => {
     const chartNode = {
@@ -39,7 +58,7 @@ export const MapPostionsChartNodes = (positions) => {
         id: position.id,
         employees: "0 employees",
         tier: position.tier,
-        department: position.division
+        department: GetDivision(position.division),
       },
     };
     return chartNode;

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { GetTiersList, MapPostionsChartNodes } from "../../common/functions/org-chart-functions";
+import {
+  GetTiersList,
+  MapPostionsChartNodes,
+} from "../../common/functions/org-chart-functions";
 import D3TreeOrgChart from "./d3-tree-org-chart/D3TreeOrgChart";
 import { OrganizationalData } from "../../common/mock/organizational-data";
 import {
@@ -29,8 +32,9 @@ const OrganizationalChart = () => {
   const [nodeTiers, setNodeTiers] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [zoom, setZoom] = useState(1);
-
   const [selectedDivision, setSelectedDivision] = useState();
+
+  const [updatedChartData, setUpdatedChartData] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -40,15 +44,12 @@ const OrganizationalChart = () => {
       try {
         const positions = await GetAllPositions(controller.signal);
         const chartData = MapPostionsChartNodes(positions);
-        
-        if (positions.length) {
-          isMounted &&
-            setTreeData((state) => {
-              state.children = chartData;
-              return state;
-            });
-          setNodeTiers(GetTiersList(chartData));
-        }
+        isMounted &&
+          setTreeData((state) => {
+            state.children = chartData;
+            return state;
+          });
+        setNodeTiers(GetTiersList(chartData));
       } catch (error) {
         console.error("error", error);
       } finally {
@@ -61,7 +62,7 @@ const OrganizationalChart = () => {
       };
     };
     loadChartData();
-  }, []);
+  }, [updatedChartData]);
 
   useEffect(() => {
     let isMounted = true;
@@ -106,6 +107,7 @@ const OrganizationalChart = () => {
             divisions={divisions}
             onSelectDivision={(division) => setSelectedDivision(division)}
             selectedDivision={selectedDivision}
+            onUpdatedChartData={() => setUpdatedChartData((state) => !state)}
           />
         )}
       </Box>

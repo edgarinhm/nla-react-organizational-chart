@@ -14,15 +14,12 @@ export const useChartApi = () => {
 
   const onSaveClick = (node) => {};
 
-  const onSelectDivision = (node) => {};
-
   const onCheckCard = (node) => {};
 
   return {
     onAddClick,
     onDeleteClick,
     onSaveClick,
-    onSelectDivision,
     onCheckCard,
   };
 };
