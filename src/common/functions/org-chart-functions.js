@@ -30,3 +30,18 @@ export const GetDivisionId = (division) => {
       return division;
   }
 };
+
+export const MapPostionsChartNodes = (positions) => {
+  return positions.map((position) => {
+    const chartNode = {
+      name: position.name,
+      attributes: {
+        id: position.id,
+        employees: "0 employees",
+        tier: position.tier,
+        department: position.division
+      },
+    };
+    return chartNode;
+  });
+};

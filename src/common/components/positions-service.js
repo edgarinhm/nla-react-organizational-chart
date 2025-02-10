@@ -43,7 +43,7 @@ export const UpdatePositionById = async (position, signal) => {
 };
 
 export const DeletePositionById = async (positionId, signal) => {
-  const response = await fetch(
+  return await fetch(
     `${API_URL}${PositionsByIdUrl.delete(positionId)}`,
     {
       headers: {
@@ -53,6 +53,4 @@ export const DeletePositionById = async (positionId, signal) => {
       signal,
     }
   );
-  const { data } = await response.json();
-  return data;
 };
