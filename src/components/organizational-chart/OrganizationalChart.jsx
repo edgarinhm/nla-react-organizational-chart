@@ -49,11 +49,13 @@ const OrganizationalChart = () => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
     const loadDivisionsData = async () => {
       setIsLoading(true);
       try {
-        const divisionData = await GetDivisions();
-        setDivisions(divisionData);
+        const divisionData = await GetDivisions(controller.signal);
+        isMounted && setDivisions(divisionData);
       } catch (error) {
         error &&
           setErrorMessage(
@@ -62,6 +64,10 @@ const OrganizationalChart = () => {
       } finally {
         setIsLoading(false);
       }
+      return () => {
+        isMounted = false;
+        controller.abort();
+      };
     };
     loadDivisionsData();
   }, []);
