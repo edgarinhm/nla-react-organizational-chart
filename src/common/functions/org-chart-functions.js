@@ -51,15 +51,23 @@ export const GetDivision = (divisionId) => {
 };
 
 export const MapPostionsChartNodes = (positions) => {
-  return positions.map((position) => {
+  const parents = positions.filter((position) => position.parentId === 0);
+  return RecursionNodeChart(parents, positions);
+};
+
+const RecursionNodeChart = (parents, positions) => {
+  return parents.map((rootPosition) => {
     const chartNode = {
-      name: position.name,
+      name: rootPosition.name,
       attributes: {
-        id: position.id,
+        id: rootPosition.id,
         employees: "0 employees",
-        tier: position.tier,
-        department: GetDivision(position.division),
+        tier: rootPosition.tier,
+        department: GetDivision(rootPosition.division),
       },
+      children: RecursionNodeChart(
+        positions.filter((position) => rootPosition.id === position.parentId), positions
+      ),
     };
     return chartNode;
   });
