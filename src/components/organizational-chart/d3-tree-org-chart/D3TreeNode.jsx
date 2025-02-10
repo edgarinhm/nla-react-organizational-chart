@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useD3Drag } from "../../../common/hooks/use-d3-drag";
 import OrgChartCard from "../../../common/components/org-chart/OrgChartCard";
+import { OrgChartRootCard } from "../../../common/components/org-chart/OrgChartRootCard";
 
 const D3TreeNode = ({
   nodeDatum,
@@ -11,7 +12,9 @@ const D3TreeNode = ({
   onSaveClick,
   onDeleteClick,
   onAddClick,
-  onCheckCard
+  onCheckCard,
+  divisions,
+  onSelectDivision,
 }) => {
   let [cacheTransform, setCacheTransform] = useState(`${x} ${y}`);
   let [cursorState, setCursorState] = useState("grab");
@@ -32,6 +35,7 @@ const D3TreeNode = ({
 
   const { employees, department, tier } = nodeDatum?.attributes;
   const depth = hierarchyPointNode?.depth;
+  if (depth === 0) ref = null;
 
   return (
     <g
@@ -40,18 +44,33 @@ const D3TreeNode = ({
       cursor={cursorState}
     >
       <foreignObject {...foreignObjectProps}>
-        <OrgChartCard>
-          <OrgChartCard.Header title={nodeDatum?.name} level={depth} onChange={onCheckCard} />
-          <OrgChartCard.Body
+        {depth === 0 ? (
+          <OrgChartRootCard
+            title={nodeDatum?.name}
             employees={employees}
-            department={department}
+            level={depth}
+            onCheckCard={onCheckCard}
             onAddClick={onAddClick}
-          />
-          <OrgChartCard.Footer
             onSaveClick={onSaveClick}
             onDeleteClick={onDeleteClick}
+            divisions={divisions}
+            onSelectDivision={onSelectDivision}
           />
-        </OrgChartCard>
+        ) : (
+          <OrgChartCard>
+            <OrgChartCard.Header
+              title={nodeDatum?.name}
+              level={depth}
+              onChange={onCheckCard}
+            />
+            <OrgChartCard.Body
+              employees={employees}
+              department={department}
+              onAddClick={onAddClick}
+            />
+            <OrgChartCard.Footer onDeleteClick={onDeleteClick} />
+          </OrgChartCard>
+        )}
       </foreignObject>
     </g>
   );
