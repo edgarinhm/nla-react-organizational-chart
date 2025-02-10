@@ -9,7 +9,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import OrgChartCard, { AddButton } from "./OrgChartCard";
+import OrgChartCard, { AddButton, ChartNode } from "./OrgChartCard";
 import AddIcon from "@mui/icons-material/Add";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -54,7 +54,7 @@ export const OrgChartRootCard = ({
   };
 
   return (
-    <OrgChartCard>
+    <ChartNode style={{ border: "0.125rem solid rgba(66,83,241,255)" }}>
       <Box className="node-card-header">
         <Box className="node-card-header-actions">
           <Checkbox
@@ -109,6 +109,6 @@ export const OrgChartRootCard = ({
         onSaveClick={onSaveClick}
         onDeleteClick={onDeleteClick}
       />
-    </OrgChartCard>
+    </ChartNode>
   );
 };

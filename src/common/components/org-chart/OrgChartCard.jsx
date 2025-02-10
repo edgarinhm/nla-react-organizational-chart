@@ -12,7 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ChartNode = styled(Paper)(({ theme }) => ({
+export const ChartNode = styled(Paper)(({ theme }) => ({
   position: "relative",
   backgroundColor: "#fff",
   stroke: "none",
