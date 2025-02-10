@@ -32,6 +32,10 @@ const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
     console.log("Select division for node:", node);
   }, []);
 
+  const handleCheckCard = useCallback((node) => {
+    console.log("Check card for node:", node);
+  }, []);
+
   const renderCustomNode = useCallback(
     (props) => {
       const nodeProps = {
@@ -41,15 +45,17 @@ const D3TreeOrgChart = ({ treeData, zoom, divisions }) => {
         onDeleteClick: handleDeleteClick,
         onSaveClick: handleSaveClick,
         onSelectDivision: handleSelectedDivision,
+        onCheckCard: handleCheckCard,
       };
       return <D3TreeNode {...nodeProps} />;
     },
     [
+      divisions,
       handleAddClick,
       handleDeleteClick,
       handleSaveClick,
       handleSelectedDivision,
-      divisions,
+      handleCheckCard,
     ]
   );
 

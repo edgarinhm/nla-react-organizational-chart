@@ -66,7 +66,7 @@ const ChartNode = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const AddButton = styled(IconButton)({
+export const AddButton = styled(IconButton)({
   position: "absolute",
   bottom: "-45px",
   left: "50%",

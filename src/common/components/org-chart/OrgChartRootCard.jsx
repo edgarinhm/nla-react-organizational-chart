@@ -9,7 +9,9 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import OrgChartCard from "./OrgChartCard";
+import OrgChartCard, { AddButton } from "./OrgChartCard";
+import AddIcon from "@mui/icons-material/Add";
+
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(3),
@@ -41,6 +43,7 @@ export const OrgChartRootCard = ({
   onCheckCard,
   divisions,
   onSelectDivision,
+  onAddClick,
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
   const employeesCount = employees?.split(" ")[0].split("/");
@@ -98,6 +101,9 @@ export const OrgChartRootCard = ({
             </option>
           ))}
         </NativeSelect>
+        <AddButton size="small" onClick={() => onAddClick()}>
+          <AddIcon />
+        </AddButton>
       </Stack>
       <OrgChartCard.Footer
         onSaveClick={onSaveClick}
