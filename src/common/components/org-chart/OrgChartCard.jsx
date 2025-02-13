@@ -127,7 +127,7 @@ const OrgChartCardBody = ({ employees, department, onAddClick }) => {
       >
         {department}
       </Typography>
-      <AddButton size="small" onClick={() => onAddClick()}>
+      <AddButton size="small" onClick={() => onAddClick({})}>
         <AddIcon />
       </AddButton>
     </Stack>

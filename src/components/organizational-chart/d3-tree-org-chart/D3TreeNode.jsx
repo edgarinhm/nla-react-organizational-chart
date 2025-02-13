@@ -50,7 +50,7 @@ const D3TreeNode = ({
             employees={employees}
             level={depth}
             onCheckCard={() => onCheckCard(nodeDatum)}
-            onAddClick={() => onAddClick(nodeDatum)}
+            onAddClick={(data) => onAddClick(nodeDatum, data)}
             onSaveClick={() => onSaveClick(nodeDatum)}
             onDeleteClick={() => onDeleteClick(nodeDatum)}
             divisions={divisions}

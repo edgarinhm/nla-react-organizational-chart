@@ -28,16 +28,19 @@ const D3TreeOrgChart = ({
   const { onAddClick, onDeleteClick } = useChartApi();
 
   const handleAddClick = useCallback(
-    async (node) => {
+    async (node, rootPosition) => {
       try {
-        const position = {
-          name: node?.name,
-          division: node?.attributes?.department
-            ? GetDivisionId(node.attributes.department)
-            : selectedDivision,
-          parentId: node.__rd3t.depth,
-          tier: `Tier ${node.__rd3t.depth + 1}`,
-        };
+        const position =
+          node.__rd3t.depth === 0
+            ? rootPosition
+            : {
+                name: node?.name,
+                division: node?.attributes?.department
+                  ? GetDivisionId(node.attributes.department)
+                  : selectedDivision,
+                parentId: node.__rd3t.depth,
+                tier: `Tier ${node.__rd3t.depth + 1}`,
+              };
         await onAddClick(position);
         onUpdatedChartData();
       } catch (error) {
