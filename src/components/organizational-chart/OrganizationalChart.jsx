@@ -4,17 +4,13 @@ import {
   MapPostionsChartNodes,
 } from "../../common/functions/org-chart-functions";
 import D3TreeOrgChart from "./d3-tree-org-chart/D3TreeOrgChart";
-import {
-  Alert,
-  Backdrop,
-  Box,
-  CircularProgress,
-  Snackbar,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import TierList from "./TierList";
 import ZoomControls from "../../common/components/org-chart/ZoomControls";
 import { GetDivisions } from "../../common/services/divisions-service";
 import { GetAllPositions } from "../../common/services/positions-service";
+import Notification from "../../common/components/notification/Notification";
+import Spinner from "../../common/components/spinner/Spinner";
 
 const OrganizationalChart = () => {
   const initialChartData = {
@@ -110,29 +106,12 @@ const OrganizationalChart = () => {
           />
         )}
       </Box>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage("")}
-      >
-        <Alert
-          onClose={() => setErrorMessage("")}
-          severity="warning"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-      {isLoading && (
-        <Backdrop
-          sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      )}
+      <Notification
+        severity={"warning"}
+        message={errorMessage}
+        setMessage={() => setErrorMessage("")}
+      />
+      {isLoading && <Spinner open={isLoading} color="inherit" />}
     </>
   );
 };
