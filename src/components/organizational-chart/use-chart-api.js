@@ -1,7 +1,8 @@
+import { CreateEmployee, DeleteEmployeeById } from "../../common/services/employees-service";
 import {
   CreatePosition,
   DeletePositionById,
-} from "../../common/components/positions-service";
+} from "../../common/services/positions-service";
 
 export const useChartApi = () => {
   const onAddClick = async (position) => {
@@ -12,14 +13,27 @@ export const useChartApi = () => {
     return await DeletePositionById(positionId);
   };
 
-  const onSaveClick = (node) => {};
+  const onAddEmployeeClick = async (employee) => {
+    return await CreateEmployee(employee);
+  };
 
-  const onCheckCard = (node) => {};
+  const onDeleteEmployeeClick = async (employeeId) => {
+    return await DeleteEmployeeById(employeeId);
+  };
+
+  const onSaveEmployeeClick = (node) => { };
+
+  const onSaveClick = (node) => { };
+
+  const onCheckCard = (node) => { };
 
   return {
     onAddClick,
     onDeleteClick,
     onSaveClick,
     onCheckCard,
+    onSaveEmployeeClick,
+    onAddEmployeeClick,
+    onDeleteEmployeeClick,
   };
 };

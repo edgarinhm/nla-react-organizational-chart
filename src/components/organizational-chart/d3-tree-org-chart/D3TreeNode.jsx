@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useD3Drag } from "../../../common/hooks/use-d3-drag";
-import OrgChartCard from "../../../common/components/org-chart/OrgChartCard";
-import { OrgChartRootCard } from "../../../common/components/org-chart/OrgChartRootCard";
+import OrgChartCard from "../OrgChartCard";
+import { OrgChartRootCard } from "../OrgChartRootCard";
 
 const D3TreeNode = ({
   nodeDatum,
@@ -15,6 +15,7 @@ const D3TreeNode = ({
   onCheckCard,
   divisions,
   onSelectDivision,
+  onOpenEmployeeDrawer,
 }) => {
   let [cacheTransform, setCacheTransform] = useState(`${x} ${y}`);
   let [cursorState, setCursorState] = useState("grab");
@@ -33,7 +34,15 @@ const D3TreeNode = ({
     },
   });
 
-  const { employees, department, tier } = nodeDatum?.attributes;
+  const position = {
+    name: nodeDatum?.name,
+    id: nodeDatum?.attributes?.id,
+    parentId: nodeDatum?.attributes?.parentId,
+    employees: nodeDatum?.attributes?.employees,
+    department: nodeDatum?.attributes?.department,
+    tier: nodeDatum?.attributes?.tier,
+  };
+
   const depth = hierarchyPointNode?.depth;
   if (depth === 0) ref = null;
 
@@ -46,28 +55,29 @@ const D3TreeNode = ({
       <foreignObject {...foreignObjectProps}>
         {depth === 0 ? (
           <OrgChartRootCard
-            title={nodeDatum?.name}
-            employees={employees}
+            position={position}
             level={depth}
             onCheckCard={() => onCheckCard(nodeDatum)}
-            onAddClick={() => onAddClick(nodeDatum)}
+            onAddClick={(data) => onAddClick(nodeDatum, data)}
             onSaveClick={() => onSaveClick(nodeDatum)}
             onDeleteClick={() => onDeleteClick(nodeDatum)}
             divisions={divisions}
             onSelectDivision={onSelectDivision}
+            onOpenEmployeeDrawer={(data) => onOpenEmployeeDrawer(data)}
           />
         ) : (
           <OrgChartCard>
             <OrgChartCard.Header
-              title={nodeDatum?.name}
+              title={position?.name}
               level={depth}
               onChange={onCheckCard}
             />
             <OrgChartCard.Body
-              employees={employees}
-              department={department}
+              position={position}
+              parentId={depth}
               onAddClick={() => onAddClick(nodeDatum)}
               onCheckCard={() => onCheckCard(nodeDatum)}
+              onOpenEmployeeDrawer={onOpenEmployeeDrawer}
             />
             <OrgChartCard.Footer
               onDeleteClick={() => onDeleteClick(nodeDatum)}

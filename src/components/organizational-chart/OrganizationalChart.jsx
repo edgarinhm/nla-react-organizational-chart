@@ -4,18 +4,14 @@ import {
   MapPostionsChartNodes,
 } from "../../common/functions/org-chart-functions";
 import D3TreeOrgChart from "./d3-tree-org-chart/D3TreeOrgChart";
-import { OrganizationalData } from "../../common/mock/organizational-data";
-import {
-  Alert,
-  Backdrop,
-  Box,
-  CircularProgress,
-  Snackbar,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import TierList from "./TierList";
-import ZoomControls from "../../common/components/org-chart/ZoomControls";
-import { GetDivisions } from "../../common/components/divisions-service";
-import { GetAllPositions } from "../../common/components/positions-service";
+import ZoomControls from "./ZoomControls";
+import { GetDivisions } from "../../common/services/divisions-service";
+import { GetAllPositions } from "../../common/services/positions-service";
+import Notification from "../../common/components/notification/Notification";
+import Spinner from "../../common/components/spinner/Spinner";
+import EmployeeDrawer from "./EmployeeDrawer";
 
 const OrganizationalChart = () => {
   const initialChartData = {
@@ -35,6 +31,8 @@ const OrganizationalChart = () => {
   const [selectedDivision, setSelectedDivision] = useState();
 
   const [updatedChartData, setUpdatedChartData] = useState(false);
+  const [openEmployeeDrawer, setOpenEmployeeDrawer] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState();
 
   useEffect(() => {
     let isMounted = true;
@@ -88,6 +86,8 @@ const OrganizationalChart = () => {
     loadDivisionsData();
   }, []);
 
+  console.log("currentPosition", currentPosition);
+
   return (
     <>
       <Box
@@ -108,30 +108,29 @@ const OrganizationalChart = () => {
             onSelectDivision={(division) => setSelectedDivision(division)}
             selectedDivision={selectedDivision}
             onUpdatedChartData={() => setUpdatedChartData((state) => !state)}
+            onOpenEmployeeDrawer={(node) => {
+              setCurrentPosition(node);
+              setOpenEmployeeDrawer(true);
+            }}
           />
         )}
       </Box>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage("")}
-      >
-        <Alert
-          onClose={() => setErrorMessage("")}
-          severity="warning"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-      <Backdrop
-        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-        open={isLoading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <Notification
+        severity={"error"}
+        message={errorMessage}
+        setMessage={() => setErrorMessage("")}
+      />
+      {isLoading && <Spinner open={isLoading} color="inherit" />}
+
+      <EmployeeDrawer
+        open={openEmployeeDrawer}
+        onClose={() => {
+          setOpenEmployeeDrawer(false);
+          setCurrentPosition();
+        }}
+        positionId={currentPosition?.id}
+        setErrorMessage={(message) => setErrorMessage(message)}
+      />
     </>
   );
 };

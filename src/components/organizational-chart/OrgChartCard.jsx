@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   IconButton,
   Paper,
@@ -104,30 +105,38 @@ const OrgChartCardHeader = ({ title, level, onChange }) => {
   );
 };
 
-const OrgChartCardBody = ({ employees, department, onAddClick }) => {
-  const employeesCount = employees?.split(" ")[0].split("/");
+const OrgChartCardBody = ({ position, onAddClick, onOpenEmployeeDrawer }) => {
+  const employeesCount = position?.employees?.split(" ")[0].split("/");
   return (
     <Stack className="node-card-body">
       <Box className="node-card-body-description">
         <Typography variant="caption" fontSize="0.5rem">
           {"Openings"}
         </Typography>
-        <Typography
-          variant="caption"
-          color={employeesCount[0] !== employeesCount[1] ? "error" : "inherit"}
-          sx={{ textDecoration: "underline" }}
+        <Button
+          variant="text"
+          sx={{ justifyContent: "flex-start", padding: 0 }}
+          onClick={() => onOpenEmployeeDrawer(position)}
         >
-          {employees}
-        </Typography>
+          <Typography
+            variant="caption"
+            color={
+              employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+            }
+            sx={{ textDecoration: "underline" }}
+          >
+            {position?.employees}
+          </Typography>
+        </Button>
       </Box>
       <Typography
         className="node-card-body-division"
         variant="caption"
         textAlign="center"
       >
-        {department}
+        {position?.department}
       </Typography>
-      <AddButton size="small" onClick={() => onAddClick()}>
+      <AddButton size="small" onClick={() => onAddClick({})}>
         <AddIcon />
       </AddButton>
     </Stack>

@@ -13,6 +13,7 @@ const D3TreeOrgChart = ({
   selectedDivision,
   onSelectDivision,
   onUpdatedChartData,
+  onOpenEmployeeDrawer,
 }) => {
   const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
@@ -28,16 +29,19 @@ const D3TreeOrgChart = ({
   const { onAddClick, onDeleteClick } = useChartApi();
 
   const handleAddClick = useCallback(
-    async (node) => {
+    async (node, rootPosition) => {
       try {
-        const position = {
-          name: node?.name,
-          division: node?.attributes?.department
-            ? GetDivisionId(node.attributes.department)
-            : selectedDivision,
-          parentId: node.__rd3t.depth,
-          tier: `Tier ${node.__rd3t.depth + 1}`,
-        };
+        const position =
+          node.__rd3t.depth === 0
+            ? rootPosition
+            : {
+                name: node?.name,
+                division: node?.attributes?.department
+                  ? GetDivisionId(node.attributes.department)
+                  : selectedDivision,
+                parentId: node.__rd3t.depth,
+                tier: `Tier ${node.__rd3t.depth + 1}`,
+              };
         await onAddClick(position);
         onUpdatedChartData();
       } catch (error) {
@@ -87,6 +91,7 @@ const D3TreeOrgChart = ({
         onSaveClick: handleSaveClick,
         onSelectDivision: handleSelectedDivision,
         onCheckCard: handleCheckCard,
+        onOpenEmployeeDrawer: onOpenEmployeeDrawer,
       };
       return <D3TreeNode {...nodeProps} />;
     },
@@ -97,6 +102,7 @@ const D3TreeOrgChart = ({
       handleSaveClick,
       handleSelectedDivision,
       handleCheckCard,
+      onOpenEmployeeDrawer,
     ]
   );
 
@@ -122,6 +128,7 @@ const D3TreeOrgChart = ({
         renderCustomNodeElement={(rd3tProps) =>
           renderCustomNode({ ...rd3tProps, foreignObjectProps })
         }
+        onNodeClick={(value) => console.log("onNodeClick:", value)}
       />
     </Box>
   );

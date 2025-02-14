@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   FormControl,
   FormHelperText,
@@ -39,26 +40,26 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export const OrgChartRootCard = ({
   level,
-  employees,
+  position,
   onSaveClick,
   onDeleteClick,
   onCheckCard,
   divisions,
   onSelectDivision,
   onAddClick,
+  onOpenEmployeeDrawer,
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
-  const employeesCount = employees?.split(" ")[0].split("/");
+  const employeesCount = position?.employees?.split(" ")[0].split("/");
   const [submitted, setSubmitted] = useState(false);
+  const [labelName, setLabelName] = useState("New position");
 
   const handleChange = (event) => {
     setSelectedDivision(event.target.value);
     onSelectDivision(event.target.value);
   };
 
-  const isValidForm = () => {
-    return !!selectedDivision;
-  };
+  const isValidForm = !!selectedDivision && !!labelName;
 
   return (
     <ChartNode style={{ border: "0.125rem solid rgba(66,83,241,255)" }}>
@@ -71,38 +72,62 @@ export const OrgChartRootCard = ({
           />
           <Avatar className="node-level">{level}</Avatar>
         </Box>
-        <Typography variant="h5" fontWeight="bold">
-          {"New position"}
-        </Typography>
+        <Box paddingX={2}>
+          <FormControl required error={!labelName}>
+            <InputBase
+              sx={{
+                flex: 1,
+                input: {
+                  textAlign: "center",
+                  fontSize: "1.5rem",
+                  fontWeight: "bold",
+                },
+              }}
+              value={labelName}
+              onChange={(event) => setLabelName(event.target.value)}
+              inputProps={{ "aria-label": labelName }}
+            />
+            {!labelName && <FormHelperText>{"Required"}</FormHelperText>}
+          </FormControl>
+        </Box>
       </Box>
       <Stack className="node-card-body">
         <Box className="node-card-body-description">
           <Typography variant="caption" fontSize="0.5rem">
             {"Openings"}
           </Typography>
-
-          <Typography
-            variant="caption"
-            color={
-              employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+          <Button
+            variant="text"
+            sx={{ justifyContent: "flex-start", padding: 0 }}
+            disabled
+            onClick={() =>
+              onOpenEmployeeDrawer({
+                name: labelName,
+                division: selectedDivision,
+                parentId: 0,
+                tier: `Tier 1`,
+              })
             }
-            sx={{ textDecoration: "underline" }}
           >
-            {employees}
-          </Typography>
+            <Typography
+              variant="caption"
+              color={
+                employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+              }
+              sx={{ textDecoration: "underline" }}
+            >
+              {position?.employees}
+            </Typography>
+          </Button>
         </Box>
-        <FormControl
-          required
-          sx={{ m: 1, minWidth: 120 }}
-          error={!isValidForm()}
-        >
+        <FormControl required sx={{ m: 1, minWidth: 120 }} error={!isValidForm}>
           <NativeSelect
             id="demo-customized-select-native"
             value={selectedDivision}
             onChange={handleChange}
             input={<BootstrapInput />}
           >
-            {!isValidForm() && (
+            {!selectedDivision && (
               <option aria-label="None" value={""}>
                 {"Division..."}
               </option>
@@ -113,15 +138,21 @@ export const OrgChartRootCard = ({
               </option>
             ))}
           </NativeSelect>
-          {!isValidForm() && submitted && (
-            <FormHelperText>Required</FormHelperText>
+          {!selectedDivision && submitted && (
+            <FormHelperText>{"Required"}</FormHelperText>
           )}
         </FormControl>
         <AddButton
           size="small"
           onClick={() => {
             setSubmitted(true);
-            if (isValidForm()) onAddClick();
+            if (isValidForm)
+              onAddClick({
+                name: labelName,
+                division: selectedDivision,
+                parentId: 0,
+                tier: `Tier 1`,
+              });
           }}
         >
           <AddIcon />
