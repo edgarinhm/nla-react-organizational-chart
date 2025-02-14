@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useD3Drag } from "../../../common/hooks/use-d3-drag";
-import OrgChartCard from "../../../common/components/org-chart/OrgChartCard";
-import { OrgChartRootCard } from "../../../common/components/org-chart/OrgChartRootCard";
+import OrgChartCard from "../OrgChartCard";
+import { OrgChartRootCard } from "../OrgChartRootCard";
 
 const D3TreeNode = ({
   nodeDatum,

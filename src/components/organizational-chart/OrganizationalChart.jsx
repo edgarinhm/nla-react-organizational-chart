@@ -6,7 +6,7 @@ import {
 import D3TreeOrgChart from "./d3-tree-org-chart/D3TreeOrgChart";
 import { Box } from "@mui/material";
 import TierList from "./TierList";
-import ZoomControls from "../../common/components/org-chart/ZoomControls";
+import ZoomControls from "./ZoomControls";
 import { GetDivisions } from "../../common/services/divisions-service";
 import { GetAllPositions } from "../../common/services/positions-service";
 import Notification from "../../common/components/notification/Notification";
