@@ -1,5 +1,10 @@
 # React Organizational Chart + JavaScript + Vite
 
+![image](https://github.com/user-attachments/assets/456d8429-cea2-4671-8703-ffd143f99d40)
+
+Employee Drawer
+![image](https://github.com/user-attachments/assets/c4c41bf6-562c-4d1f-95f2-15a98e031375)
+
 This project was bootstrapped with [Vite](https://vitejs.dev/).
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
