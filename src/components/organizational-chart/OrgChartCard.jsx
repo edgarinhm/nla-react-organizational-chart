@@ -105,14 +105,8 @@ const OrgChartCardHeader = ({ title, level, onChange }) => {
   );
 };
 
-const OrgChartCardBody = ({
-  employees,
-  department,
-  parentId,
-  onAddClick,
-  onOpenEmployeeDrawer,
-}) => {
-  const employeesCount = employees?.split(" ")[0].split("/");
+const OrgChartCardBody = ({ position, onAddClick, onOpenEmployeeDrawer }) => {
+  const employeesCount = position?.employees?.split(" ")[0].split("/");
   return (
     <Stack className="node-card-body">
       <Box className="node-card-body-description">
@@ -122,9 +116,7 @@ const OrgChartCardBody = ({
         <Button
           variant="text"
           sx={{ justifyContent: "flex-start", padding: 0 }}
-          onClick={() =>
-            onOpenEmployeeDrawer({ parentId, employees, department })
-          }
+          onClick={() => onOpenEmployeeDrawer(position)}
         >
           <Typography
             variant="caption"
@@ -133,7 +125,7 @@ const OrgChartCardBody = ({
             }
             sx={{ textDecoration: "underline" }}
           >
-            {employees}
+            {position?.employees}
           </Typography>
         </Button>
       </Box>
@@ -142,7 +134,7 @@ const OrgChartCardBody = ({
         variant="caption"
         textAlign="center"
       >
-        {department}
+        {position?.department}
       </Typography>
       <AddButton size="small" onClick={() => onAddClick({})}>
         <AddIcon />

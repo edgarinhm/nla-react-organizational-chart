@@ -40,7 +40,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export const OrgChartRootCard = ({
   level,
-  employees,
+  position,
   onSaveClick,
   onDeleteClick,
   onCheckCard,
@@ -50,7 +50,7 @@ export const OrgChartRootCard = ({
   onOpenEmployeeDrawer,
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
-  const employeesCount = employees?.split(" ")[0].split("/");
+  const employeesCount = position?.employees?.split(" ")[0].split("/");
   const [submitted, setSubmitted] = useState(false);
   const [labelName, setLabelName] = useState("New position");
 
@@ -116,7 +116,7 @@ export const OrgChartRootCard = ({
               }
               sx={{ textDecoration: "underline" }}
             >
-              {employees}
+              {position?.employees}
             </Typography>
           </Button>
         </Box>

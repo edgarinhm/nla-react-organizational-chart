@@ -64,6 +64,7 @@ const RecursionNodeChart = (parents, positions) => {
         employees: "0 employees",
         tier: rootPosition.tier,
         department: GetDivision(rootPosition.division),
+        parentId: rootPosition.parentId
       },
       children: RecursionNodeChart(
         positions.filter((position) => rootPosition.id === position.parentId), positions

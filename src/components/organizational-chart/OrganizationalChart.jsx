@@ -86,6 +86,8 @@ const OrganizationalChart = () => {
     loadDivisionsData();
   }, []);
 
+  console.log("currentPosition", currentPosition);
+
   return (
     <>
       <Box
@@ -114,7 +116,7 @@ const OrganizationalChart = () => {
         )}
       </Box>
       <Notification
-        severity={"warning"}
+        severity={"error"}
         message={errorMessage}
         setMessage={() => setErrorMessage("")}
       />
@@ -126,7 +128,8 @@ const OrganizationalChart = () => {
           setOpenEmployeeDrawer(false);
           setCurrentPosition();
         }}
-        positionId={currentPosition?.parentId}
+        positionId={currentPosition?.id}
+        setErrorMessage={(message) => setErrorMessage(message)}
       />
     </>
   );

@@ -34,7 +34,15 @@ const D3TreeNode = ({
     },
   });
 
-  const { employees, department, tier } = nodeDatum?.attributes;
+  const position = {
+    name: nodeDatum?.name,
+    id: nodeDatum?.attributes?.id,
+    parentId: nodeDatum?.attributes?.parentId,
+    employees: nodeDatum?.attributes?.employees,
+    department: nodeDatum?.attributes?.department,
+    tier: nodeDatum?.attributes?.tier,
+  };
+
   const depth = hierarchyPointNode?.depth;
   if (depth === 0) ref = null;
 
@@ -47,8 +55,7 @@ const D3TreeNode = ({
       <foreignObject {...foreignObjectProps}>
         {depth === 0 ? (
           <OrgChartRootCard
-            title={nodeDatum?.name}
-            employees={employees}
+            position={position}
             level={depth}
             onCheckCard={() => onCheckCard(nodeDatum)}
             onAddClick={(data) => onAddClick(nodeDatum, data)}
@@ -61,13 +68,12 @@ const D3TreeNode = ({
         ) : (
           <OrgChartCard>
             <OrgChartCard.Header
-              title={nodeDatum?.name}
+              title={position?.name}
               level={depth}
               onChange={onCheckCard}
             />
             <OrgChartCard.Body
-              employees={employees}
-              department={department}
+              position={position}
               parentId={depth}
               onAddClick={() => onAddClick(nodeDatum)}
               onCheckCard={() => onCheckCard(nodeDatum)}

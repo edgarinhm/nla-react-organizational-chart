@@ -25,14 +25,13 @@ export const GetPositionEmployees = async (positionId, signal) => {
   return data;
 };
 
-export const CreateEmployee = async (employee, signal) => {
+export const CreateEmployee = async (employee) => {
   const response = await fetch(`${API_URL}${EmployeesUrl.post(employee.id)}`, {
     headers: {
       "Content-Type": "application/json",
     },
     method: "POST",
     body: JSON.stringify(employee),
-    signal,
   });
   const { data } = await response.json();
   return data;

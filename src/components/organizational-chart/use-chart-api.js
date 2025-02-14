@@ -1,3 +1,4 @@
+import { CreateEmployee, DeleteEmployeeById } from "../../common/services/employees-service";
 import {
   CreatePosition,
   DeletePositionById,
@@ -12,8 +13,15 @@ export const useChartApi = () => {
     return await DeletePositionById(positionId);
   };
 
+  const onAddEmployeeClick = async (employee) => {
+    return await CreateEmployee(employee);
+  };
+
+  const onDeleteEmployeeClick = async (employeeId) => {
+    return await DeleteEmployeeById(employeeId);
+  };
+
   const onSaveEmployeeClick = (node) => { };
-  const onAddEmployeeClick = (node) => { };
 
   const onSaveClick = (node) => { };
 
@@ -26,5 +34,6 @@ export const useChartApi = () => {
     onCheckCard,
     onSaveEmployeeClick,
     onAddEmployeeClick,
+    onDeleteEmployeeClick,
   };
 };
