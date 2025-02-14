@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   FormControl,
   FormHelperText,
@@ -46,6 +47,7 @@ export const OrgChartRootCard = ({
   divisions,
   onSelectDivision,
   onAddClick,
+  onOpenEmployeeDrawer,
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
   const employeesCount = employees?.split(" ")[0].split("/");
@@ -94,15 +96,28 @@ export const OrgChartRootCard = ({
           <Typography variant="caption" fontSize="0.5rem">
             {"Openings"}
           </Typography>
-          <Typography
-            variant="caption"
-            color={
-              employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+          <Button
+            variant="text"
+            sx={{ justifyContent: "flex-start", padding: 0 }}
+            onClick={() =>
+              onOpenEmployeeDrawer({
+                name: labelName,
+                division: selectedDivision,
+                parentId: 0,
+                tier: `Tier 1`,
+              })
             }
-            sx={{ textDecoration: "underline" }}
           >
-            {employees}
-          </Typography>
+            <Typography
+              variant="caption"
+              color={
+                employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+              }
+              sx={{ textDecoration: "underline" }}
+            >
+              {employees}
+            </Typography>
+          </Button>
         </Box>
         <FormControl required sx={{ m: 1, minWidth: 120 }} error={!isValidForm}>
           <NativeSelect

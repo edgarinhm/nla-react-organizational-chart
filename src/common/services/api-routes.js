@@ -14,8 +14,13 @@ export const PositionsByIdUrl = {
 
 
 export const EmployeesUrl = {
-    get: () => '/employees',
+    get: () => `/employees`,
     post: () => '/employees',
+}
+
+
+export const PositionEmployeesUrl = {
+    get: (positionId) => `/positions/${positionId}/employees`,
 }
 
 export const EmployeesByIdUrl = {

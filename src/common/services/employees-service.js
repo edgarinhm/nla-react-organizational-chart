@@ -1,8 +1,20 @@
 import { API_URL } from "../constants/env-constants";
-import { EmployeesByIdUrl, EmployeesUrl } from "./api-routes";
+import { EmployeesByIdUrl, EmployeesUrl, PositionEmployeesUrl } from "./api-routes";
 
 export const GetAllEmployees = async (signal) => {
   const response = await fetch(`${API_URL}${EmployeesUrl.get()}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "GET",
+    signal,
+  });
+  const { data } = await response.json();
+  return data;
+};
+
+export const GetPositionEmployees = async (positionId, signal) => {
+  const response = await fetch(`${API_URL}${PositionEmployeesUrl.get(positionId)}`, {
     headers: {
       "Content-Type": "application/json",
     },

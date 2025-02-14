@@ -11,6 +11,7 @@ import { GetDivisions } from "../../common/services/divisions-service";
 import { GetAllPositions } from "../../common/services/positions-service";
 import Notification from "../../common/components/notification/Notification";
 import Spinner from "../../common/components/spinner/Spinner";
+import EmployeeDrawer from "./EmployeeDrawer";
 
 const OrganizationalChart = () => {
   const initialChartData = {
@@ -30,6 +31,8 @@ const OrganizationalChart = () => {
   const [selectedDivision, setSelectedDivision] = useState();
 
   const [updatedChartData, setUpdatedChartData] = useState(false);
+  const [openEmployeeDrawer, setOpenEmployeeDrawer] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState();
 
   useEffect(() => {
     let isMounted = true;
@@ -103,6 +106,10 @@ const OrganizationalChart = () => {
             onSelectDivision={(division) => setSelectedDivision(division)}
             selectedDivision={selectedDivision}
             onUpdatedChartData={() => setUpdatedChartData((state) => !state)}
+            onOpenEmployeeDrawer={(node) => {
+              setCurrentPosition(node);
+              setOpenEmployeeDrawer(true);
+            }}
           />
         )}
       </Box>
@@ -112,6 +119,15 @@ const OrganizationalChart = () => {
         setMessage={() => setErrorMessage("")}
       />
       {isLoading && <Spinner open={isLoading} color="inherit" />}
+
+      <EmployeeDrawer
+        open={openEmployeeDrawer}
+        onClose={() => {
+          setOpenEmployeeDrawer(false);
+          setCurrentPosition();
+        }}
+        positionId={currentPosition?.parentId}
+      />
     </>
   );
 };

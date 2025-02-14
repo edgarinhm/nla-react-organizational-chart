@@ -12,6 +12,9 @@ export const useChartApi = () => {
     return await DeletePositionById(positionId);
   };
 
+  const onSaveEmployeeClick = (node) => { };
+  const onAddEmployeeClick = (node) => { };
+
   const onSaveClick = (node) => { };
 
   const onCheckCard = (node) => { };
@@ -21,5 +24,7 @@ export const useChartApi = () => {
     onDeleteClick,
     onSaveClick,
     onCheckCard,
+    onSaveEmployeeClick,
+    onAddEmployeeClick,
   };
 };

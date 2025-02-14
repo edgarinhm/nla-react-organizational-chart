@@ -15,6 +15,7 @@ const D3TreeNode = ({
   onCheckCard,
   divisions,
   onSelectDivision,
+  onOpenEmployeeDrawer,
 }) => {
   let [cacheTransform, setCacheTransform] = useState(`${x} ${y}`);
   let [cursorState, setCursorState] = useState("grab");
@@ -55,6 +56,7 @@ const D3TreeNode = ({
             onDeleteClick={() => onDeleteClick(nodeDatum)}
             divisions={divisions}
             onSelectDivision={onSelectDivision}
+            onOpenEmployeeDrawer={(data) => onOpenEmployeeDrawer(data)}
           />
         ) : (
           <OrgChartCard>
@@ -66,8 +68,10 @@ const D3TreeNode = ({
             <OrgChartCard.Body
               employees={employees}
               department={department}
+              parentId={depth}
               onAddClick={() => onAddClick(nodeDatum)}
               onCheckCard={() => onCheckCard(nodeDatum)}
+              onOpenEmployeeDrawer={onOpenEmployeeDrawer}
             />
             <OrgChartCard.Footer
               onDeleteClick={() => onDeleteClick(nodeDatum)}

@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   IconButton,
   Paper,
@@ -104,7 +105,13 @@ const OrgChartCardHeader = ({ title, level, onChange }) => {
   );
 };
 
-const OrgChartCardBody = ({ employees, department, onAddClick }) => {
+const OrgChartCardBody = ({
+  employees,
+  department,
+  parentId,
+  onAddClick,
+  onOpenEmployeeDrawer,
+}) => {
   const employeesCount = employees?.split(" ")[0].split("/");
   return (
     <Stack className="node-card-body">
@@ -112,13 +119,23 @@ const OrgChartCardBody = ({ employees, department, onAddClick }) => {
         <Typography variant="caption" fontSize="0.5rem">
           {"Openings"}
         </Typography>
-        <Typography
-          variant="caption"
-          color={employeesCount[0] !== employeesCount[1] ? "error" : "inherit"}
-          sx={{ textDecoration: "underline" }}
+        <Button
+          variant="text"
+          sx={{ justifyContent: "flex-start", padding: 0 }}
+          onClick={() =>
+            onOpenEmployeeDrawer({ parentId, employees, department })
+          }
         >
-          {employees}
-        </Typography>
+          <Typography
+            variant="caption"
+            color={
+              employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+            }
+            sx={{ textDecoration: "underline" }}
+          >
+            {employees}
+          </Typography>
+        </Button>
       </Box>
       <Typography
         className="node-card-body-division"

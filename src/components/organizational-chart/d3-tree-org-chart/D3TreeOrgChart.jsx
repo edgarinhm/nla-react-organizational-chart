@@ -13,6 +13,7 @@ const D3TreeOrgChart = ({
   selectedDivision,
   onSelectDivision,
   onUpdatedChartData,
+  onOpenEmployeeDrawer,
 }) => {
   const nodeSize = { x: 200, y: 280 };
   const separation = { siblings: 1.5, nonSiblings: 2.5 };
@@ -90,6 +91,7 @@ const D3TreeOrgChart = ({
         onSaveClick: handleSaveClick,
         onSelectDivision: handleSelectedDivision,
         onCheckCard: handleCheckCard,
+        onOpenEmployeeDrawer: onOpenEmployeeDrawer,
       };
       return <D3TreeNode {...nodeProps} />;
     },
@@ -100,6 +102,7 @@ const D3TreeOrgChart = ({
       handleSaveClick,
       handleSelectedDivision,
       handleCheckCard,
+      onOpenEmployeeDrawer,
     ]
   );
 
@@ -125,6 +128,7 @@ const D3TreeOrgChart = ({
         renderCustomNodeElement={(rd3tProps) =>
           renderCustomNode({ ...rd3tProps, foreignObjectProps })
         }
+        onNodeClick={(value) => console.log("onNodeClick:", value)}
       />
     </Box>
   );
