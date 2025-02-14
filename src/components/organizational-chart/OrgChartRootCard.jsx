@@ -99,6 +99,7 @@ export const OrgChartRootCard = ({
           <Button
             variant="text"
             sx={{ justifyContent: "flex-start", padding: 0 }}
+            disabled
             onClick={() =>
               onOpenEmployeeDrawer({
                 name: labelName,
