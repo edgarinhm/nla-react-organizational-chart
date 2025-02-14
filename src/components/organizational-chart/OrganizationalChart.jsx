@@ -17,7 +17,7 @@ const OrganizationalChart = () => {
   const initialChartData = {
     name: "New position",
     attributes: {
-      employees: "0 employees",
+      employees: "0/0 employees",
       tier: "tier 1",
     },
     children: [],
