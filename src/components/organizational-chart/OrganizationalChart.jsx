@@ -4,7 +4,6 @@ import {
   MapPostionsChartNodes,
 } from "../../common/functions/org-chart-functions";
 import D3TreeOrgChart from "./d3-tree-org-chart/D3TreeOrgChart";
-import { OrganizationalData } from "../../common/mock/organizational-data";
 import {
   Alert,
   Backdrop,
@@ -14,8 +13,8 @@ import {
 } from "@mui/material";
 import TierList from "./TierList";
 import ZoomControls from "../../common/components/org-chart/ZoomControls";
-import { GetDivisions } from "../../common/components/divisions-service";
-import { GetAllPositions } from "../../common/components/positions-service";
+import { GetDivisions } from "../../common/services/divisions-service";
+import { GetAllPositions } from "../../common/services/positions-service";
 
 const OrganizationalChart = () => {
   const initialChartData = {

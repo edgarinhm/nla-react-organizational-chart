@@ -1,7 +1,7 @@
 import {
   CreatePosition,
   DeletePositionById,
-} from "../../common/components/positions-service";
+} from "../../common/services/positions-service";
 
 export const useChartApi = () => {
   const onAddClick = async (position) => {
@@ -12,9 +12,9 @@ export const useChartApi = () => {
     return await DeletePositionById(positionId);
   };
 
-  const onSaveClick = (node) => {};
+  const onSaveClick = (node) => { };
 
-  const onCheckCard = (node) => {};
+  const onCheckCard = (node) => { };
 
   return {
     onAddClick,
