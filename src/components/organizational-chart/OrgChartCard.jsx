@@ -120,10 +120,8 @@ const OrgChartCardBody = ({ position, onAddClick, onOpenEmployeeDrawer }) => {
         >
           <Typography
             variant="caption"
-            color={
-              employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
-            }
-            sx={{ textDecoration: "underline" }}
+            color={position?.employees.charAt(0) === "0" ? "error" : "black"}
+            sx={{ textDecoration: "underline", textTransform: "lowercase" }}
           >
             {position?.employees}
           </Typography>

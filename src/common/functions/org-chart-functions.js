@@ -61,7 +61,7 @@ const RecursionNodeChart = (parents, positions) => {
       name: rootPosition.name,
       attributes: {
         id: rootPosition.id,
-        employees: "0 employees",
+        employees: `${rootPosition.employees}/${rootPosition.employees} employee${rootPosition.employees > 1 || rootPosition.employees === 0 ? 's' : ''}`,
         tier: rootPosition.tier,
         department: GetDivision(rootPosition.division),
         parentId: rootPosition.parentId

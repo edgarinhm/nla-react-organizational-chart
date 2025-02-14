@@ -112,9 +112,9 @@ export const OrgChartRootCard = ({
             <Typography
               variant="caption"
               color={
-                employeesCount[0] !== employeesCount[1] ? "error" : "inherit"
+                position?.employees.charAt(0) === "0" ? "error" : "inherit"
               }
-              sx={{ textDecoration: "underline" }}
+              sx={{ textDecoration: "underline", textTransform: "lowercase" }}
             >
               {position?.employees}
             </Typography>
