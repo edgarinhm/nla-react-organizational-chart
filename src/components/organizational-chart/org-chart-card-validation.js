@@ -3,7 +3,7 @@ import { z, ZodError } from "zod";
 
 // creating a schema
 export const OrgCardChartSchema = z.object({
-    division: z.string().min(1, { message: "Division is required." }),
+    division: z.string().trim().min(1, { message: "Division is required." }),
     positionName: z.string().trim().min(1, { message: "Position is required." }).max(150, { message: "Position name is too long." }),
 });
 
