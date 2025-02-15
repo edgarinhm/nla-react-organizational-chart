@@ -21,7 +21,8 @@
     "gh-pages": "^6.3.0",
     "material-react-table": "^3.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

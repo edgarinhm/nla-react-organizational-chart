@@ -86,8 +86,6 @@ const OrganizationalChart = () => {
     loadDivisionsData();
   }, []);
 
-  console.log("currentPosition", currentPosition);
-
   return (
     <>
       <Box

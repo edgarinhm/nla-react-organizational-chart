@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import OrgChartCard, { AddButton, ChartNode } from "./OrgChartCard";
 import AddIcon from "@mui/icons-material/Add";
+import { useOrgCardChartValidation } from "./org-chart-card-validation";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -50,7 +51,6 @@ export const OrgChartRootCard = ({
   onOpenEmployeeDrawer,
 }) => {
   const [selectedDivision, setSelectedDivision] = useState("");
-  const employeesCount = position?.employees?.split(" ")[0].split("/");
   const [submitted, setSubmitted] = useState(false);
   const [labelName, setLabelName] = useState("New position");
 
@@ -60,6 +60,11 @@ export const OrgChartRootCard = ({
   };
 
   const isValidForm = !!selectedDivision && !!labelName;
+
+  const [errors, hasErrors] = useOrgCardChartValidation({
+    division: selectedDivision,
+    positionName: labelName,
+  });
 
   return (
     <ChartNode style={{ border: "0.125rem solid rgba(66,83,241,255)" }}>
@@ -83,11 +88,14 @@ export const OrgChartRootCard = ({
                   fontWeight: "bold",
                 },
               }}
+              id="positionName"
               value={labelName}
               onChange={(event) => setLabelName(event.target.value)}
               inputProps={{ "aria-label": labelName }}
             />
-            {!labelName && <FormHelperText>{"Required"}</FormHelperText>}
+            {errors?.positionName && submitted && (
+              <FormHelperText>{errors.positionName}</FormHelperText>
+            )}
           </FormControl>
         </Box>
       </Box>
@@ -122,7 +130,7 @@ export const OrgChartRootCard = ({
         </Box>
         <FormControl required sx={{ m: 1, minWidth: 120 }} error={!isValidForm}>
           <NativeSelect
-            id="demo-customized-select-native"
+            id="division"
             value={selectedDivision}
             onChange={handleChange}
             input={<BootstrapInput />}
@@ -138,15 +146,15 @@ export const OrgChartRootCard = ({
               </option>
             ))}
           </NativeSelect>
-          {!selectedDivision && submitted && (
-            <FormHelperText>{"Required"}</FormHelperText>
+          {errors?.division && submitted && (
+            <FormHelperText>{errors.division}</FormHelperText>
           )}
         </FormControl>
         <AddButton
           size="small"
           onClick={() => {
             setSubmitted(true);
-            if (isValidForm)
+            if (!hasErrors)
               onAddClick({
                 name: labelName,
                 division: selectedDivision,
