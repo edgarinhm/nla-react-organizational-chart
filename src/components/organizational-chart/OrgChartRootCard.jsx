@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import OrgChartCard, { AddButton, ChartNode } from "./OrgChartCard";
 import AddIcon from "@mui/icons-material/Add";
-import { useOrgCardChartValidation } from "./org-chart-card-validation";
+import { useOrgCardChartValidation } from "./use-org-chart-card-validation";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
