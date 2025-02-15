@@ -15,21 +15,20 @@ export const useOrgCardChartValidation = (position) => {
 
     useEffect(() => {
         let newHasErrors = false;
+        let newErrors = {};
         try {
             OrgCardChartSchema.parse({ division, positionName });
-            setHasErrors(false);
+            setErrors();
         } catch (error) {
             if (error instanceof ZodError) {
-                let zodErrors = [];
                 error.issues.forEach((zodError) => {
-                    zodErrors[zodError.path[0]] = zodError.message;
+                    newErrors[zodError.path[0]] = zodError.message;
                 });
-                setErrors(zodErrors);
-
+                newHasErrors = true;
             }
-            newHasErrors = true;
         }
-        setHasErrors(newHasErrors)
+        setErrors(newErrors);
+        setHasErrors(newHasErrors);
     }, [division, positionName]);
 
     return [errors, hasErrors]
